@@ -95,7 +95,7 @@ generate_messages(DEPENDENCIES actionlib_msgs geometry_msgs)
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kraken_msgs
-  CATKIN_DEPENDS actionlib actionlib_msgs std_msgs geometry_msgs sensor_msgs roscpp rospy message_runtime
+  CATKIN_DEPENDS actionlib actionlib_msgs std_msgs geometry_msgs roscpp rospy message_runtime
 #  DEPENDS system_lib
 )
 
