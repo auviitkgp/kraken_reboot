@@ -49,7 +49,8 @@ extern const char* CONTROL_LOADPARAM;
 
 //sensor topics
 extern const char* SENSOR_IMU;
-extern const char* SENSOR_IMU_NEW;
+extern const char* SENSOR_IMU_TEMPERATURE;
+extern const char* SENSOR_IMU_MAGNETOMETER;
 extern const char* SENSOR_DEPTH;
 extern const char* SENSOR_DVL;
 
