@@ -5,8 +5,8 @@
 
 int i=0;
 const int curr_calib=514;
-float v_gain=(211.3)/33.0;
-//float v_gain=1.0;
+//float v_gain=(211.3)/33.0;
+float v_gain=25.5;
 int BAT_ipin=A0, BAT_vpin=A4;
 
 ros::NodeHandle nh;
@@ -35,7 +35,7 @@ void loop()
   BAT_State.header.stamp=nh.now();
   BAT_StatePub.publish(&BAT_State);
   nh.spinOnce();
-  delay(1);
+  delay(100);
 }
 
 void prepareBatteryStates()
@@ -87,7 +87,7 @@ void getVoltage()
   //Reading and Storing Battery Voltage and Supply Health
   if(BAT_State.present)
   {
-    BAT_State.voltage=analogRead(BAT_vpin)*5.0*v_gain/1023.0;
+    BAT_State.voltage=analogRead(BAT_vpin)*v_gain/1023.0;
     if(BAT_State.voltage>24.5)
     {
       BAT_State.power_supply_health=BAT_State.POWER_SUPPLY_HEALTH_OVERVOLTAGE;
