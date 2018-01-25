@@ -1,0 +1,9 @@
+<!-- Come on baby!!! Let's Turn on the sensors!!! B) B) -->
+<launch>
+  <param name="DVL_Uncertainity" value="[0.000001,0,0,0,0,0,0,0.000001,0,0,0,0,0,0,0.000001,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]" />
+  <node pkg="nqDVL" name="DVL_Data_Publisher" type="nqDVL.py" />
+  <param name="AngularVelCov_mat" value="[0.00000274155678,0,0,0,0.00000274155678,0,0,0,0.00000274155678]" />
+  <param name="LinearAccelerationCov_mat" value="[0.000015280102,0,0,0,0.000015280102,0,0,0,0.000015280102]" />
+  <param name="OrientationCov_mat" value="[0.0003046174198,0,0,0,0.0003046174198,0,0,0,0.0003046174198]" />
+  <node pkg="sparton" name="IMU_Data_Publisher" type="sparton.py" />
+</launch>
