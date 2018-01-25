@@ -1,0 +1,9 @@
+<!-- Reference: ekf_template.launch -->
+
+<!-- This is the launch for starting the Extended Kalman Filter based 15 Variable State Estimation using robot_localization package for IIT Kharagpur Team AUV -->
+
+<launch>
+  <node pkg="robot_localization" type="ekf_localization_node" name="AUV_State_Publisher" clear_params="true">
+    <rosparam command="load" file="$(find robot_localization)/params/AUV_EKF_Params.yaml" />
+  </node>
+</launch>
