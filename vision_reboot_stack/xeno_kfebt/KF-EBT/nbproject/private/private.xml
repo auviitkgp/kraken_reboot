@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-private xmlns="http://www.netbeans.org/ns/project-private/1">
+    <code-assistance-data xmlns="http://www.netbeans.org/ns/make-project-private/1">
+        <code-model-enabled>true</code-model-enabled>
+    </code-assistance-data>
+    <data xmlns="http://www.netbeans.org/ns/make-project-private/1">
+        <activeConfTypeElem>0</activeConfTypeElem>
+        <activeConfIndexElem>0</activeConfIndexElem>
+    </data>
+    <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
+    <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+        <group>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/main.cpp</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/trackers/tasms.h</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/kfebtracker.h</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/kfebt.cpp</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/trackers/btracker.h</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/trackers/tasms.cpp</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/kfebt.h</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/kfebtracker.cpp</file>
+            <file>file:/home/dyutimoy/Documents/Auv_research/kf-ebt/KF-EBT/main_cam.cpp</file>
+        </group>
+    </open-files>
+</project-private>

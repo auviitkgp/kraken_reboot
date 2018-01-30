@@ -1,0 +1,25 @@
+Scanning dependencies of target KF-EBT_WebCam
+[  4%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/main_cam.cpp.o
+[  8%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/ASMS/colotracker.cpp.o
+[ 13%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/ASMS/histogram.cpp.o
+[ 17%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/ASMS/region.cpp.o
+[ 21%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/kcf/piotr_fhog/gradientMex.cpp.o
+[ 26%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/kcf/adjust.cpp.o
+[ 30%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/kcf/kcf.cpp.o
+[ 34%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/kfebt.cpp.o
+[ 39%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/tasms.cpp.o
+[ 43%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/tkcf.cpp.o
+[ 47%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/CBT/consensus/fastcluster/fastcluster.cpp.o
+[ 52%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/CBT/consensus/common.cpp.o
+[ 56%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/CBT/consensus/Consensus.cpp.o
+[ 60%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/tcbt.cpp.o
+[ 65%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/CBT/cbt.cpp.o
+[ 69%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/CBT/consensus/coloravaliation.cpp.o
+[ 73%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/MOSSE/mosse.cpp.o
+[ 78%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/NCC/ncc.cpp.o
+[ 82%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/tncc.cpp.o
+[ 86%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/tmosse.cpp.o
+[ 91%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/trackers/tvdp.cpp.o
+[ 95%] Building CXX object CMakeFiles/KF-EBT_WebCam.dir/kfebtracker.cpp.o
+[100%] Linking CXX executable KF-EBT_WebCam
+[100%] Built target KF-EBT_WebCam
