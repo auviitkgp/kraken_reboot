@@ -1,0 +1,11 @@
+<launch>
+    <node pkg="rosserial_python" type="serial_node.py" name="Nano1" respawn="true">
+    <param name="port" value="/dev/$(env nanoi)"/>
+    <param name="baud" value="115200"/>
+  </node>
+  <node pkg="rosserial_python" type="serial_node.py" name="Nano2" respawn="true">
+    <param name="port" value="/dev/$(env nanoii)"/>
+    <param name="baud" value="115200"/>
+  </node>
+    <node pkg="rosbag" type="play" name="hardcode" output="screen" args="/home/teamauv/2018-02-05-08-27-14.bag"/>
+</launch>
