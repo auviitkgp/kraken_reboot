@@ -119,9 +119,9 @@ def getVal(rawdata):
 		#pubData.data[0] = floatData[1]   #roll
 		#pubData.data[1] = floatData[0]   #pitch
 		#pubData.data[2] = floatData[2]   #yaw
-		pubData.twist.twist.linear.x = -floatData[15]/100.0  #Longitudinal Vel
-		pubData.twist.twist.linear.y = floatData[14]/100.0  #Y Vel
-		pubData.twist.twist.linear.z = floatData[16]/100.0  #Normal Vel
+		pubData.twist.twist.linear.x = -floatData[15]/1000.0  #Longitudinal Vel
+		pubData.twist.twist.linear.y = floatData[14]/1000.0  #Y Vel
+		pubData.twist.twist.linear.z = floatData[16]/1000.0  #Normal Vel
 		#pubData.data[6] = floatData[22]  #altitude
 		#pubData.data[7] = floatData[5]   #depth  (does not work in our model)
 		#print floatData[5]
