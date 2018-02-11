@@ -1,0 +1,58 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>control_system</name>
+  <version>0.0.0</version>
+  <description>The control_system package</description>
+  <maintainer email="yash@todo.todo">yash</maintainer>
+  <license>TODO</license>
+
+
+  <buildtool_depend>catkin</buildtool_depend>
+
+  <build_depend>actionlib</build_depend>
+  <build_depend>tf</build_depend>
+  <build_depend>actionlib_msgs</build_depend>
+  <build_depend>dynamic_reconfigure</build_depend>
+  <build_depend>kraken_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+  <build_depend>resources</build_depend>
+  <build_depend>roscpp</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>nav_msgs</build_depend>
+  <build_depend>msgs_stack</build_depend>
+  <build_depend>resources</build_depend>
+
+  <build_export_depend>actionlib</build_export_depend>
+  <build_export_depend>tf</build_export_depend>
+  <build_export_depend>actionlib_msgs</build_export_depend>
+  <build_export_depend>dynamic_reconfigure</build_export_depend>
+  <build_export_depend>kraken_msgs</build_export_depend>
+  <build_export_depend>resources</build_export_depend>
+  <build_export_depend>roscpp</build_export_depend>
+  <build_export_depend>rospy</build_export_depend>
+  <build_export_depend>std_msgs</build_export_depend>
+  <build_export_depend>nav_msgs</build_export_depend>
+  <build_export_depend>msgs_stack</build_export_depend>
+  <build_export_depend>resources</build_export_depend>
+  <build_export_depend>message_generation</build_export_depend>
+
+  <exec_depend>actionlib</exec_depend>
+  <exec_depend>tf</exec_depend>
+  <exec_depend>actionlib_msgs</exec_depend>
+  <exec_depend>dynamic_reconfigure</exec_depend>
+  <exec_depend>kraken_msgs</exec_depend>
+  <exec_depend>resources</exec_depend>
+  <exec_depend>roscpp</exec_depend>
+  <exec_depend>rospy</exec_depend>
+  <exec_depend>std_msgs</exec_depend>
+  <exec_depend>nav_msgs</exec_depend>
+  <exec_depend>msgs_stack</exec_depend>
+  <exec_depend>resources</exec_depend>
+  <exec_depend>message_generation</exec_depend>
+
+  <export>
+    <!-- Other tools can request additional information be placed here -->
+
+  </export>
+</package>

@@ -1,0 +1,36 @@
+\subsubsection parameters ROS parameters
+
+Reads and maintains the following parameters on the ROS server
+
+- \b "~offset" : \b [double] offset value min: 0.0, default: 0.0, max: 100.0
+- \b "~Gain_i_px" : \b [double] Gain_I for pos_x min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_py" : \b [double] Gain_I for pos_y min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_pz" : \b [double] Gain_I for pos_z min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_px" : \b [double] Gain for pos_x min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_py" : \b [double] Gain for pos_y min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_pz" : \b [double] Gain for pos_z min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_vx" : \b [double] Gain for vel_x min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_vy" : \b [double] Gain for vel_y min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_vz" : \b [double] Gain for vel_z min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_ax" : \b [double] Gain for acc_x min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_ay" : \b [double] Gain for acc_y min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_az" : \b [double] Gain for acc_z min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_vx" : \b [double] Gain for pos_x min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_vy" : \b [double] Gain for pos_y min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_vz" : \b [double] Gain for pos_z min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_roll" : \b [double] Gain_I for roll min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_pitch" : \b [double] Gain_I for pitch min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_yaw" : \b [double] Gain_I for yaw min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_roll" : \b [double] Gain for roll min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_pitch" : \b [double] Gain for pitch min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_yaw" : \b [double] Gain for yaw min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_vel_roll" : \b [double] Gain for vel_roll min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_vel_pitch" : \b [double] Gain for vel_pitch min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_vel_yaw" : \b [double] Gain for vel_yaw min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_vel_roll" : \b [double] Gain_I for vel_roll min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_vel_pitch" : \b [double] Gain_I for vel_pitch min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_i_vel_yaw" : \b [double] Gain_I for vel_yaw min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_acc_roll" : \b [double] Gain for acc_roll min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_acc_pitch" : \b [double] Gain for acc_pitch min: -200.0, default: 0.0, max: 200.0
+- \b "~Gain_acc_yaw" : \b [double] Gain for acc_yaw min: -200.0, default: 0.0, max: 200.0
+
