@@ -13,6 +13,7 @@ int main(int argc, char **argv){
     _actionClient.waitForServer();
     ROS_INFO("CONTROL_SERVER STARTED, SENDING GOAL.");
     kraken_msgs::advancedControllerGoal _goal;
+    _goal.GoalType = 0;
     if(argv[1] == "surge"){
         _goal.pose.position.x = 2;
         _goal.pose.position.y = 0;
