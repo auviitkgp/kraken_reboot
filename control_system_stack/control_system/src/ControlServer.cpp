@@ -47,6 +47,26 @@ namespace kraken_controller{
             ROS_INFO("WRONG GOALTYPE RECEIVED");
         }
         start = false;
+        GoalFlag = true;
+        while(GoalFlag){
+            if(_ControlServer->isPreemptRequested() || !ros::ok()){
+                 _ControlServer->setPreempted();
+                 _state.stop();
+                 ROS_INFO("CONTROLSERVER IS PREEMPTED");
+                 GoalFlag = false;
+            }
+            else{
+                transformGoal(&_pose_Goal, &_twist_Goal);
+                kraken_msgs::thrusterData6Thruster thrust;
+                _state.setThrusters(&thrust);
+                _pub6.publish(thrust);
+                if(_state.checkError() == true){
+                    GoalFlag = false;
+                    start = true;
+                    _ControlServer->setSucceeded();
+                }
+            }
+        }
     }
 
     void ControlServer::transformGoal(geometry_msgs::Pose *pose, geometry_msgs::Twist *twist){
@@ -99,24 +119,24 @@ namespace kraken_controller{
             _state.setThrusters(&thrust);
             _pub6.publish(thrust);
         }
-        else if(GoalFlag){
-            if (_ControlServer->isPreemptRequested() || !ros::ok()){
-                 _ControlServer->setPreempted();
-                 _state.stop();
-                 ROS_INFO("CONTROLSERVER IS PREEMPTED");
-            }
-            else{
-                transformGoal(&_pose_Goal, &_twist_Goal);
-                kraken_msgs::thrusterData6Thruster thrust;
-                _state.setThrusters(&thrust);
-                _pub6.publish(thrust);
-                if(_state.checkError() == true){
-                    GoalFlag = false;
-                    start = true;
-                    _ControlServer->setSucceeded();
-                }
-            }
-        }
+        // else if(GoalFlag){
+        //     if (_ControlServer->isPreemptRequested() || !ros::ok()){
+        //          _ControlServer->setPreempted();
+        //          _state.stop();
+        //          ROS_INFO("CONTROLSERVER IS PREEMPTED");
+        //     }
+        //     else{
+        //         transformGoal(&_pose_Goal, &_twist_Goal);
+        //         kraken_msgs::thrusterData6Thruster thrust;
+        //         _state.setThrusters(&thrust);
+        //         _pub6.publish(thrust);
+        //         if(_state.checkError() == true){
+        //             GoalFlag = false;
+        //             start = true;
+        //             _ControlServer->setSucceeded();
+        //         }
+        //     }
+        // }
     }
 
     void ControlServer::loadParams(const std::vector<std::string> &filenames){
@@ -145,6 +165,6 @@ namespace kraken_controller{
 
     void ControlServer::callback5(control_system::paramsConfig &msg, uint32_t level){
         if(GoalFlag)  _state.changeParams(msg, 5);
-        else GoalFlag = true;
+        //else GoalFlag = true;
     }
 }
