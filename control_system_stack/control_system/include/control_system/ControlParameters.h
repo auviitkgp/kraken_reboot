@@ -18,7 +18,7 @@ namespace kraken_controller{
         const std::string getName();
         int getRows();
         int getColumns();
-        
+
     protected:
         double **_gain;
         double * _offset;

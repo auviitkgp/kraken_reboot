@@ -12,8 +12,9 @@ namespace kraken_controller{
         _pose_Goal.orientation.x = 0;
         _pose_Goal.orientation.y = 0;
         _pose_Goal.orientation.z = 0;
-        _pose_Goal.orientation.w = 0;
+        _pose_Goal.orientation.w = 1;
         GoalFlag = false;
+        _state.poseParam();
     }
 
     ControlServer::~ControlServer(){}
@@ -33,6 +34,15 @@ namespace kraken_controller{
             _pose_Goal.orientation.x = msg->pose.orientation.x;
             _pose_Goal.orientation.y = msg->pose.orientation.y;
             _pose_Goal.orientation.z = msg->pose.orientation.z;
+            _pose_Goal.orientation.w = msg->pose.orientation.w;
+            // std::cout<<"goalx    "<<msg->pose.position.x<<"\n";
+            // std::cout<<"goaly    "<<msg->pose.position.y<<"\n";
+            // std::cout<<"goalz    "<<msg->pose.position.z<<"\n";
+            // std::cout<<"goalorix    "<<msg->pose.orientation.x<<"\n";
+            // std::cout<<"goaloriy    "<<msg->pose.orientation.y<<"\n";
+            // std::cout<<"goaloriz    "<<msg->pose.orientation.z<<"\n";
+            // std::cout<<"goaloriw    "<<msg->pose.orientation.w<<"\n";
+            ROS_INFO("POSE GOAL RECEIVED");
         }
         else if(msg->GoalType == 1){
             _state.twistParam();
@@ -42,6 +52,7 @@ namespace kraken_controller{
             _twist_Goal.angular.x = msg->twist.angular.x;
             _twist_Goal.angular.y = msg->twist.angular.y;
             _twist_Goal.angular.z = msg->twist.angular.z;
+            ROS_INFO("TWIST GOAL RECEIVED");
         }
         else{
             ROS_INFO("WRONG GOALTYPE RECEIVED");
@@ -76,6 +87,8 @@ namespace kraken_controller{
         geometry_msgs::PointStamped tempPose;
         geometry_msgs::PointStamped tempTwist;
 
+
+
         tempPose.header.frame_id = "odom"; //////
         tempPose.header.stamp = ros::Time();
         tempPose.point.x = pose->position.x;
@@ -108,7 +121,10 @@ namespace kraken_controller{
         catch(tf::TransformException& ex){
             ROS_ERROR("RECEIVED AN EXCEPTION IN TRANSFORMING THE TWIST_GOAL %s", ex.what());
         }
-
+        transPose.orientation.x = pose->orientation.x;
+        transPose.orientation.y = pose->orientation.y;
+        transPose.orientation.z = pose->orientation.z;
+        transPose.orientation.w = pose->orientation.w;
         _state.updatePID(transPose, transTwist);
     }
 

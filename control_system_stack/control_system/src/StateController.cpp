@@ -68,6 +68,9 @@ namespace kraken_controller{
         _pose_error[10] = pitch;
         _pose_error[11] = yaw;
 
+        for(int i = 0; i<3; i++){
+            std::cout<<i<<_pose_error[i]<<"\n";
+        }
         _vel_error[3] = _vel_error[0] - transTwist.linear.x;
         _vel_error[4] = _vel_error[1] - transTwist.linear.y;
         _vel_error[5] = _vel_error[2] - transTwist.linear.z;
@@ -136,7 +139,7 @@ namespace kraken_controller{
         gain[ThrusterSelection][28] = msg.Gain_i_vel_pitch;
         gain[ThrusterSelection][29] = msg.Gain_i_vel_yaw;
 
-        std::string str = "/home/yash/auv_ws/src/kraken_3.0/control_system/parameters/";
+        std::string str = "/home/yash/auv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
         std::fstream fp;
         str = str.append(_gain_file).c_str();
         fp.open(str.append(".cp").c_str(), std::ios::trunc | std::ios::out);
@@ -145,9 +148,10 @@ namespace kraken_controller{
     }
 
     bool StateController::checkError(){
-        for(int i = 0; i<3; i++){
+        for(int i = 0; i<3; i++){//check goaltype
+            std::cout<<"GoalType"<<GoalType;
             if(GoalType == 0){
-                if(_pose_error[i] >= 0.5 && _vel_error[i] >= 0.5)
+                if(_pose_error[i] >= 0.005 || _vel_error[i] >= 0.005)
                     return false;
             }
             else if(GoalType == 1){
