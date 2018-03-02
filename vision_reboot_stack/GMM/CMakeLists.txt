@@ -28,3 +28,5 @@ target_link_libraries(pub_r  ${OpenCV_LIBRARIES}  ${catkin_LIBRARIES})
 
 add_executable(sub_r src/subscriber_r.cpp)
 target_link_libraries(sub_r  ${OpenCV_LIBRARIES}  ${catkin_LIBRARIES})
+add_executable(kalman_r src/kalman_r.cpp)
+target_link_libraries(kalman_r ${OpenCV_LIBRARIES}  ${catkin_LIBRARIES})

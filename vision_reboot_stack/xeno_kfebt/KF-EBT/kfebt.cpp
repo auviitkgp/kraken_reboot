@@ -26,7 +26,7 @@ KFEBT::KFEBT(int nStates, int nMeasurements, int nInputs, double dt, cv::Rect in
     KF.transitionMatrix.at<double>(0,6) = 0.5*pow(dt,2);
     KF.transitionMatrix.at<double>(1,7) = 0.5*pow(dt,2);
     KF.transitionMatrix.at<double>(2,8) = 0.5*pow(dt,2);
-    
+
     /* MEASUREMENT MODEL */
     //  [1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
     //  [0 1 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0]
@@ -60,7 +60,9 @@ void KFEBT::correct(std::vector<float> measures, std::vector<float> Uncertainty)
     for(int i = 0; i < (int)measures.size(); i++){
         KFMeasures.at<double>(i) = measures[i];
         KF.measurementNoiseCov.at<double>(i,i) = Uncertainty[i];
+          std::cout<<i<<"  "<<Uncertainty[i]<<std::endl;
     }
+
     corrected = KF.correct(KFMeasures).clone();
 }
 
@@ -88,4 +90,3 @@ std::vector<float> KFEBT::getPrediction(){
     ret.push_back(estimated.at<double>(2));
     return ret;
 }
-
