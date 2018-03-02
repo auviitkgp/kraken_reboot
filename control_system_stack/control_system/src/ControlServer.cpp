@@ -6,6 +6,7 @@ namespace kraken_controller{
         _pub6 = n.advertise<kraken_msgs::thrusterData6Thruster>(topics::CONTROL_PID_THRUSTER6, 5);
         //_subState = n.subscribe<nav_msgs::Odometry>("odometry/filtered", 5, &StateController::updateState, &_state);
         start = true;
+<<<<<<< HEAD
         _pose_Goal.position.x = 0;
         _pose_Goal.position.y = 0;
         _pose_Goal.position.z = 0;
@@ -13,6 +14,26 @@ namespace kraken_controller{
         _pose_Goal.orientation.y = 0;
         _pose_Goal.orientation.z = 0;
         _pose_Goal.orientation.w = 1;
+=======
+
+        tf::TransformListener listener;
+        ros::Rate rate(10.0);
+        tf::StampedTransform transform;
+        try{
+            listener.lookupTransform("/base_link", "/odom", ros::Time(0), transform);
+        }
+        catch(tf::TransformException ex){
+        ROS_ERROR("%s",ex.what());
+        ros::Duration(1.0).sleep();
+        }
+        _pose_Goal.position.x = transform.getOrigin().x();
+        _pose_Goal.position.y = transform.getOrigin().y();
+        _pose_Goal.position.z = transform.getOrigin().z();
+        _pose_Goal.orientation.x = transform.getRotation().x();
+        _pose_Goal.orientation.y = transform.getRotation().y();
+        _pose_Goal.orientation.z = transform.getRotation().z();
+        _pose_Goal.orientation.w = transform.getRotation().w();
+>>>>>>> upstream/testing-controls
         GoalFlag = false;
         _state.poseParam();
     }
@@ -57,6 +78,7 @@ namespace kraken_controller{
         else{
             ROS_INFO("WRONG GOALTYPE RECEIVED");
         }
+        _state.poseParam();
         start = false;
         GoalFlag = true;
         while(GoalFlag){

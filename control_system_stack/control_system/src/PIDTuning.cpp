@@ -14,8 +14,12 @@ int main(int argc, char **argv){
     ROS_INFO("CONTROL_SERVER STARTED, SENDING GOAL.");
     kraken_msgs::advancedControllerGoal _goal;
     _goal.GoalType = 0;
+<<<<<<< HEAD
 
     if(argv[1] == std::string("surge")){
+=======
+    if(argv[1] == "surge"){
+>>>>>>> upstream/testing-controls
         _goal.pose.position.x = 2;
         _goal.pose.position.y = 0;
         _goal.pose.position.z = 0;
@@ -23,9 +27,14 @@ int main(int argc, char **argv){
         _goal.pose.orientation.y = 0;
         _goal.pose.orientation.z = 0;
         _goal.pose.orientation.w = 1;
+<<<<<<< HEAD
         std::cout<<argv[1]<<" \n";
     }
     if(argv[1] == std::string("depth")){
+=======
+    }
+    if(argv[1] == "depth"){
+>>>>>>> upstream/testing-controls
         _goal.pose.position.x = 0;
         _goal.pose.position.y = 0;
         _goal.pose.position.z = 1;
@@ -34,7 +43,11 @@ int main(int argc, char **argv){
         _goal.pose.orientation.z = 0;
         _goal.pose.orientation.w = 1;
     }
+<<<<<<< HEAD
     if(argv[1] == std::string("yaw")){
+=======
+    if(argv[1] == "yaw"){
+>>>>>>> upstream/testing-controls
         _goal.pose.position.x = 0;
         _goal.pose.position.y = 0;
         _goal.pose.position.z = 0;

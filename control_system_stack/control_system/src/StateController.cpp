@@ -55,6 +55,7 @@ namespace kraken_controller{
 
         double roll, pitch, yaw;
         tf::Quaternion q(transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
+        //printf("%f %f %f %f \n", transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
         tf::Matrix3x3 temp(q);
         temp.getRPY(roll, pitch, yaw);
 
@@ -90,6 +91,9 @@ namespace kraken_controller{
         _vel_error[9] = transTwist.angular.x;
         _vel_error[10] = transTwist.angular.y;
         _vel_error[11] = transTwist.angular.z;
+        // for(int i=0; i<18; i++){
+        //     printf("%d %f \n",i, _pose_error[i]);
+        // }
     }
 
     void StateController::loadParams(const std::vector<std::string> &filenames){
@@ -139,10 +143,14 @@ namespace kraken_controller{
         gain[ThrusterSelection][28] = msg.Gain_i_vel_pitch;
         gain[ThrusterSelection][29] = msg.Gain_i_vel_yaw;
 
+<<<<<<< HEAD
         std::string str = "/home/yash/auv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
+=======
+        std::string str = "/home/teamauv/teamauv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
+>>>>>>> upstream/testing-controls
         std::fstream fp;
         str = str.append(_gain_file).c_str();
-        fp.open(str.append(".cp").c_str(), std::ios::trunc | std::ios::out);
+        fp.open(str.c_str(), std::ios::trunc | std::ios::out);
         if(fp.is_open()) _controlParams[n_map]->write(&fp);
         else ROS_INFO("UNABLE TO OPEN FILE %s", _gain_file.c_str());
     }
@@ -151,7 +159,11 @@ namespace kraken_controller{
         for(int i = 0; i<3; i++){//check goaltype
             std::cout<<"GoalType"<<GoalType;
             if(GoalType == 0){
+<<<<<<< HEAD
                 if(_pose_error[i] >= 0.005 || _vel_error[i] >= 0.005)
+=======
+                if(_pose_error[i] >= 0.05 || _vel_error[i] >= 0.05)
+>>>>>>> upstream/testing-controls
                     return false;
             }
             else if(GoalType == 1){
@@ -166,22 +178,28 @@ namespace kraken_controller{
         int n_map = _controlParams_index[_gain_file];
         double *offset = _controlParams[n_map]->getOffset();
         double **gain = _controlParams[n_map]->getGain();
+        //_controlParams[n_map]->write(std::cerr);
         if(GoalType == 0){
-            thrust->data[0] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][3]*_pose_error[3] + gain[0][6]*_pose_error[6] + gain[0][15]*_pose_error[11] + gain[0][18]*_pose_error[14] + gain[0][21]*_pose_error[17];
-            thrust->data[1] = offset[1] + gain[1][0]*_pose_error[0] + gain[1][3]*_pose_error[3] + gain[1][6]*_pose_error[6] + gain[1][15]*_pose_error[11] + gain[1][18]*_pose_error[14] + gain[1][21]*_pose_error[17];
-            thrust->data[2] = 0;//offset[2] + gain[2][0]*_pose_error[0] + gain[2][3]*_pose_error[3] + gain[2][6]*_pose_error[6] + gain[2][15]*_pose_error[9] + gain[2][19]*_pose_error[12] + gain[2][21]*_pose_error[15];
-            thrust->data[3] = 0;//offset[3] + gain[3][0]*_pose_error[0] + gain[3][3]*_pose_error[3] + gain[3][6]*_pose_error[6] + gain[3][15]*_pose_error[9] + gain[3][19]*_pose_error[12] + gain[3][21]*_pose_error[15];
-            thrust->data[4] = offset[4] + gain[4][2]*_pose_error[2] + gain[4][5]*_pose_error[5] + gain[4][8]*_pose_error[8] + gain[4][17]*_pose_error[10] + gain[4][20]*_pose_error[13] + gain[4][23]*_pose_error[16];
-            thrust->data[5] = offset[5] + gain[5][2]*_pose_error[2] + gain[5][5]*_pose_error[5] + gain[5][8]*_pose_error[8] + gain[5][17]*_pose_error[10] + gain[5][20]*_pose_error[13] + gain[5][23]*_pose_error[16];
+            thrust->data[2] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][3]*_pose_error[3] + gain[0][6]*_pose_error[6] + gain[0][15]*_pose_error[11] + gain[0][18]*_pose_error[14] + gain[0][21]*_pose_error[17];
+
+            thrust->data[3] = offset[1] + gain[1][0]*_pose_error[0] + gain[1][3]*_pose_error[3] + gain[1][6]*_pose_error[6] + gain[1][15]*_pose_error[11] + gain[1][18]*_pose_error[14] + gain[1][21]*_pose_error[17];
+
+            thrust->data[4] = 0;//offset[2] + gain[2][0]*_pose_error[0] + gain[2][3]*_pose_error[3] + gain[2][6]*_pose_error[6] + gain[2][15]*_pose_error[9] + gain[2][19]*_pose_error[12] + gain[2][21]*_pose_error[15];
+            thrust->data[5] = 0;//offset[3] + gain[3][0]*_pose_error[0] + gain[3][3]*_pose_error[3] + gain[3][6]*_pose_error[6] + gain[3][15]*_pose_error[9] + gain[3][19]*_pose_error[12] + gain[3][21]*_pose_error[15];
+            thrust->data[0] = offset[4] + gain[4][2]*_pose_error[2] + gain[4][5]*_pose_error[5] + gain[4][8]*_pose_error[8] + gain[4][17]*_pose_error[10] + gain[4][20]*_pose_error[13] + gain[4][23]*_pose_error[16];
+
+            thrust->data[1] = offset[5] + gain[5][2]*_pose_error[2] + gain[5][5]*_pose_error[5] + gain[5][8]*_pose_error[8];// + gain[5][17]*_pose_error[10] + gain[5][20]*_pose_error[13] + gain[5][23]*_pose_error[16];
         }
-        else{
+        /*else{
             thrust->data[0] = offset[0] + gain[0][0]*_vel_error[0] + gain[0][3]*_vel_error[3] + gain[0][6]*_vel_error[6] + gain[0][15]*_vel_error[11] + gain[0][18]*_vel_error[14] + gain[0][21]*_vel_error[17];
+
             thrust->data[1] = offset[1] + gain[1][0]*_vel_error[0] + gain[1][3]*_vel_error[3] + gain[1][6]*_vel_error[6] + gain[1][15]*_vel_error[11] + gain[1][18]*_vel_error[14] + gain[1][21]*_vel_error[17];
+
             thrust->data[2] = 0;//offset[2] + gain[2][0]*_vel_error[0] + gain[2][3]*_vel_error[3] + gain[2][6]*_vel_error[6] + gain[2][15]*_vel_error[9] + gain[2][19]*_vel_error[12] + gain[2][21]*_vel_error[15];
             thrust->data[3] = 0;//offset[3] + gain[3][0]*_vel_error[0] + gain[3][3]*_vel_error[3] + gain[3][6]*_vel_error[6] + gain[3][15]*_vel_error[9] + gain[3][19]*_vel_error[12] + gain[3][21]*_vel_error[15];
             thrust->data[4] = offset[4] + gain[4][2]*_vel_error[2] + gain[4][5]*_vel_error[5] + gain[4][8]*_vel_error[8] + gain[4][17]*_vel_error[10] + gain[4][20]*_vel_error[13] + gain[4][23]*_vel_error[16];
             thrust->data[5] = offset[5] + gain[5][2]*_vel_error[2] + gain[5][5]*_vel_error[5] + gain[5][8]*_vel_error[8] + gain[5][17]*_vel_error[10] + gain[5][20]*_vel_error[13] + gain[5][23]*_vel_error[16];
-        }
+        }*/
 
     }
 }

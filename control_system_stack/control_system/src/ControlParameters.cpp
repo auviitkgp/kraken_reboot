@@ -20,9 +20,14 @@ namespace kraken_controller{
 
     void ControlParameters::load(const std::string &filename){
         std::ifstream file;
+<<<<<<< HEAD
         std::string str = "/home/yash/auv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
         str.append(filename).c_str();
         file.open((str.append(".cp")).c_str());
+=======
+        std::string str = "/home/teamauv/teamauv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
+        file.open((str.append(filename)).c_str());
+>>>>>>> upstream/testing-controls
         ROS_INFO("LOADING FILE WITH NAME %s", filename.c_str());
 
         if(file.is_open()){

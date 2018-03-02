@@ -1,0 +1,10 @@
+#goal
+int8 GoalType
+geometry_msgs/Pose pose
+geometry_msgs/Twist twist
+
+---
+#result
+---
+#feedback
+
