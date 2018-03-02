@@ -21,7 +21,7 @@ int main(int argc, char **argv){
         _goal.pose.orientation.x = 0;
         _goal.pose.orientation.y = 0;
         _goal.pose.orientation.z = 0;
-        _goal.pose.orientation.w = 0;
+        _goal.pose.orientation.w = 1;
     }
     if(argv[1] == "depth"){
         _goal.pose.position.x = 0;
@@ -30,7 +30,7 @@ int main(int argc, char **argv){
         _goal.pose.orientation.x = 0;
         _goal.pose.orientation.y = 0;
         _goal.pose.orientation.z = 0;
-        _goal.pose.orientation.w = 0;
+        _goal.pose.orientation.w = 1;
     }
     if(argv[1] == "yaw"){
         _goal.pose.position.x = 0;
@@ -38,8 +38,8 @@ int main(int argc, char **argv){
         _goal.pose.position.z = 0;
         _goal.pose.orientation.x = 0;
         _goal.pose.orientation.y = 0;
-        _goal.pose.orientation.z = 0;
-        _goal.pose.orientation.w = 1;
+        _goal.pose.orientation.z = 1;
+        _goal.pose.orientation.w = 0;
     }
     _actionClient.sendGoal(_goal);
     bool finished_before_timeout = _actionClient.waitForResult(ros::Duration(30.0));

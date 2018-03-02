@@ -6,13 +6,24 @@ namespace kraken_controller{
         _pub6 = n.advertise<kraken_msgs::thrusterData6Thruster>(topics::CONTROL_PID_THRUSTER6, 5);
         //_subState = n.subscribe<nav_msgs::Odometry>("odometry/filtered", 5, &StateController::updateState, &_state);
         start = true;
-        _pose_Goal.position.x = 0;
-        _pose_Goal.position.y = 0;
-        _pose_Goal.position.z = 0;
-        _pose_Goal.orientation.x = 0;
-        _pose_Goal.orientation.y = 0;
-        _pose_Goal.orientation.z = 0;
-        _pose_Goal.orientation.w = 0;
+
+        tf::TransformListener listener;
+        ros::Rate rate(10.0);
+        tf::StampedTransform transform;
+        try{
+            listener.lookupTransform("/base_link", "/odom", ros::Time(0), transform);
+        }
+        catch(tf::TransformException ex){
+        ROS_ERROR("%s",ex.what());
+        ros::Duration(1.0).sleep();
+        }
+        _pose_Goal.position.x = transform.getOrigin().x();
+        _pose_Goal.position.y = transform.getOrigin().y();
+        _pose_Goal.position.z = transform.getOrigin().z();
+        _pose_Goal.orientation.x = transform.getRotation().x();
+        _pose_Goal.orientation.y = transform.getRotation().y();
+        _pose_Goal.orientation.z = transform.getRotation().z();
+        _pose_Goal.orientation.w = transform.getRotation().w();
         GoalFlag = false;
     }
 
@@ -46,6 +57,7 @@ namespace kraken_controller{
         else{
             ROS_INFO("WRONG GOALTYPE RECEIVED");
         }
+        _state.poseParam();
         start = false;
         GoalFlag = true;
         while(GoalFlag){
@@ -108,7 +120,10 @@ namespace kraken_controller{
         catch(tf::TransformException& ex){
             ROS_ERROR("RECEIVED AN EXCEPTION IN TRANSFORMING THE TWIST_GOAL %s", ex.what());
         }
-
+        transPose.orientation.x = pose->orientation.x;
+        transPose.orientation.y = pose->orientation.y;
+        transPose.orientation.z = pose->orientation.z;
+        transPose.orientation.w = pose->orientation.w;
         _state.updatePID(transPose, transTwist);
     }
 

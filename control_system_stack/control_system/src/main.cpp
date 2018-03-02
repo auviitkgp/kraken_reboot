@@ -7,12 +7,12 @@
 int main(int argc, char **argv){
     ros::init(argc, argv, "CONTROL_SERVER");
     ros::NodeHandle n;
-    ros::NodeHandle n_a("~/left_surge");
-    ros::NodeHandle n_b("~/right_surge");
-    ros::NodeHandle n_c("~/front_sway");
-    ros::NodeHandle n_d("~/back_sway");
-    ros::NodeHandle n_e("~/front_depth");
-    ros::NodeHandle n_f("~/back_depth");
+    ros::NodeHandle n_a("~/front_depth");
+    ros::NodeHandle n_b("~/front_depth");
+    ros::NodeHandle n_c("~/left_surge");
+    ros::NodeHandle n_d("~/right_surge");
+    ros::NodeHandle n_e("~/front_sway");
+    ros::NodeHandle n_f("~/back_sway");
 
     if(argc > 2){
         kraken_controller::ControlServer _server;
