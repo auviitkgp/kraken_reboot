@@ -33,10 +33,10 @@ static Ptr<BackgroundSubtractor> pMOG2; //MOG2 Background subtractor
 void processVideo(Mat img) {
 
         std_msgs::Int64MultiArray s;
-        Mat img_ycrcb;
+        Mat img_hsv;
       //  imshow("FG Mask MOG 2", fgMaskMOG2);
 
-        cvtColor(img,img_ycrcb,CV_BGR2YCrCb);
+        cvtColor(img,img_hsv,CV_BGR2HSV);
         //TEST BLUE GOOD IF IT GIVES result
         Mat blue_tub(img.rows,img.cols,CV_8UC1);
         Mat blue_ycrcb(img.rows,img.cols,CV_8UC1);
@@ -45,7 +45,7 @@ void processVideo(Mat img) {
             for (int j = 0; j < img.cols; j++)
             {
               //  h = get_h((int)img_hsv.at<Vec3b>(i,j)[0],(int)img_hsv.at<Vec3b>(i,j)[1],(int)img_hsv.at<Vec3b>(i,j)[2]);
-              if((int)fgMaskMOG2.at<uchar>(i,j)==255 && (int)img_ycrcb.at<Vec3b>(i,j)[1] > val_crl && (int)img_ycrcb.at<Vec3b>(i,j)[1] < val_cru && (int)img_ycrcb.at<Vec3b>(i,j)[2] < val_cbu && (int)img_ycrcb.at<Vec3b>(i,j)[1] > val_cbl)
+              if((int)fgMaskMOG2.at<uchar>(i,j)==255 && (int)img_hsv.at<Vec3b>(i,j)[0] > 150)
               {
                   blue_tub.at<uchar>(i,j)=255;
               }
@@ -57,7 +57,7 @@ void processVideo(Mat img) {
 
         imshow("blue_tub",blue_tub);
 
-        GaussianBlur(blue_tub,blue_tub,Size(15,15),2,2);
+        GaussianBlur(blue_tub,blue_tub,Size(45,45),2,2);
 
         vector<vector<Point> > contours;
         vector<Vec4i> hierarchy;
@@ -152,10 +152,7 @@ int main(int argc, char** argv) {
   namedWindow("blue_tub", 1);
 
 //make trackbar call back
-  createTrackbar("crl", "blue_tub", &val_crl, val_crl_max);
-  createTrackbar("cbl", "blue_tub", &val_cbl, val_cbl_max);
-  createTrackbar("cru", "blue_tub", &val_cru, val_cru_max);
-  createTrackbar("cbu", "blue_tub", &val_cbu, val_cbu_max);
+
   ros::init(argc, argv, "object_detect");
   ros::NodeHandle nh;
   image_transport::ImageTransport it(nh);

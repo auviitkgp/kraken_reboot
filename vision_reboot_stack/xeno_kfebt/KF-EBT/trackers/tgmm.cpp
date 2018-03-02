@@ -38,7 +38,7 @@ void tGMM::track(){
                          pow(dist_adj*fabs(state[1] - currentPredictRect[1])/((double)r_gmm.height), 2);// +
                          //pow(dist_adj*fabs(state[2] - currentPredictRect[2])/(double)asms.lastPosition.width,2);
         ///need to decide confidenceGMM kya karu iska
-    float uncertainty = 1e-4*exp(-3.5*(conf_adj - penalityGMM));
+    float uncertainty = 1e-5;
     stateUncertainty.push_back(uncertainty);
     stateUncertainty.push_back(uncertainty);
     stateUncertainty.push_back(uncertainty);
