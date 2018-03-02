@@ -6,6 +6,15 @@ namespace kraken_controller{
         _pub6 = n.advertise<kraken_msgs::thrusterData6Thruster>(topics::CONTROL_PID_THRUSTER6, 5);
         //_subState = n.subscribe<nav_msgs::Odometry>("odometry/filtered", 5, &StateController::updateState, &_state);
         start = true;
+<<<<<<< HEAD
+        _pose_Goal.position.x = 0;
+        _pose_Goal.position.y = 0;
+        _pose_Goal.position.z = 0;
+        _pose_Goal.orientation.x = 0;
+        _pose_Goal.orientation.y = 0;
+        _pose_Goal.orientation.z = 0;
+        _pose_Goal.orientation.w = 1;
+=======
 
         tf::TransformListener listener;
         ros::Rate rate(10.0);
@@ -24,7 +33,9 @@ namespace kraken_controller{
         _pose_Goal.orientation.y = transform.getRotation().y();
         _pose_Goal.orientation.z = transform.getRotation().z();
         _pose_Goal.orientation.w = transform.getRotation().w();
+>>>>>>> upstream/testing-controls
         GoalFlag = false;
+        _state.poseParam();
     }
 
     ControlServer::~ControlServer(){}
@@ -44,6 +55,15 @@ namespace kraken_controller{
             _pose_Goal.orientation.x = msg->pose.orientation.x;
             _pose_Goal.orientation.y = msg->pose.orientation.y;
             _pose_Goal.orientation.z = msg->pose.orientation.z;
+            _pose_Goal.orientation.w = msg->pose.orientation.w;
+            // std::cout<<"goalx    "<<msg->pose.position.x<<"\n";
+            // std::cout<<"goaly    "<<msg->pose.position.y<<"\n";
+            // std::cout<<"goalz    "<<msg->pose.position.z<<"\n";
+            // std::cout<<"goalorix    "<<msg->pose.orientation.x<<"\n";
+            // std::cout<<"goaloriy    "<<msg->pose.orientation.y<<"\n";
+            // std::cout<<"goaloriz    "<<msg->pose.orientation.z<<"\n";
+            // std::cout<<"goaloriw    "<<msg->pose.orientation.w<<"\n";
+            ROS_INFO("POSE GOAL RECEIVED");
         }
         else if(msg->GoalType == 1){
             _state.twistParam();
@@ -53,6 +73,7 @@ namespace kraken_controller{
             _twist_Goal.angular.x = msg->twist.angular.x;
             _twist_Goal.angular.y = msg->twist.angular.y;
             _twist_Goal.angular.z = msg->twist.angular.z;
+            ROS_INFO("TWIST GOAL RECEIVED");
         }
         else{
             ROS_INFO("WRONG GOALTYPE RECEIVED");
@@ -87,6 +108,8 @@ namespace kraken_controller{
 
         geometry_msgs::PointStamped tempPose;
         geometry_msgs::PointStamped tempTwist;
+
+
 
         tempPose.header.frame_id = "odom"; //////
         tempPose.header.stamp = ros::Time();

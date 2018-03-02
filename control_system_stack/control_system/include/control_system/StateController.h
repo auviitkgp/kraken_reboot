@@ -5,6 +5,7 @@
 #include "nav_msgs/Odometry.h"
 #include "control_system/ControlParameters.h"
 #include "iostream"
+#include "fstream"
 #include "tf/transform_listener.h"
 #include "tf/LinearMath/Matrix3x3.h"
 #include "geometry_msgs/Pose.h"
