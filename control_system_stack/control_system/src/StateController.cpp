@@ -69,9 +69,9 @@ namespace kraken_controller{
         _pose_error[10] = pitch;
         _pose_error[11] = yaw;
 
-        for(int i = 0; i<3; i++){
-            std::cout<<i<<_pose_error[i]<<"\n";
-        }
+        // for(int i = 9; i<12; i++){
+        //     std::cout<<i<<_pose_error[i]<<"\n";
+        // }
         _vel_error[3] = _vel_error[0] - transTwist.linear.x;
         _vel_error[4] = _vel_error[1] - transTwist.linear.y;
         _vel_error[5] = _vel_error[2] - transTwist.linear.z;
@@ -143,27 +143,53 @@ namespace kraken_controller{
         gain[ThrusterSelection][28] = msg.Gain_i_vel_pitch;
         gain[ThrusterSelection][29] = msg.Gain_i_vel_yaw;
 
-<<<<<<< HEAD
-        std::string str = "/home/yash/auv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
-=======
+        offset[ThrusterSelection+1] = msg.offset;
+        gain[ThrusterSelection+1][0] = msg.Gain_px;
+        gain[ThrusterSelection+1][1] = msg.Gain_py;
+        gain[ThrusterSelection+1][2] = msg.Gain_pz;
+        gain[ThrusterSelection+1][3] = msg.Gain_vx;
+        gain[ThrusterSelection+1][4] = msg.Gain_vy;
+        gain[ThrusterSelection+1][5] = msg.Gain_vz;
+        gain[ThrusterSelection+1][6] = msg.Gain_i_px;
+        gain[ThrusterSelection+1][7] = msg.Gain_i_py;
+        gain[ThrusterSelection+1][8] = msg.Gain_i_pz;
+        gain[ThrusterSelection+1][9] = msg.Gain_ax;
+        gain[ThrusterSelection+1][10] = msg.Gain_ay;
+        gain[ThrusterSelection+1][11] = msg.Gain_az;
+        gain[ThrusterSelection+1][12] = msg.Gain_i_vx;
+        gain[ThrusterSelection+1][13] = msg.Gain_i_vy;
+        gain[ThrusterSelection+1][14] = msg.Gain_i_vz;
+
+        gain[ThrusterSelection+1][15] = msg.Gain_roll;
+        gain[ThrusterSelection+1][16] = msg.Gain_pitch;
+        gain[ThrusterSelection+1][17] = msg.Gain_yaw;
+        gain[ThrusterSelection+1][18] = msg.Gain_vel_roll;
+        gain[ThrusterSelection+1][19] = msg.Gain_vel_pitch;
+        gain[ThrusterSelection+1][20] = msg.Gain_vel_yaw;
+        gain[ThrusterSelection+1][21] = msg.Gain_i_roll;
+        gain[ThrusterSelection+1][22] = msg.Gain_i_pitch;
+        gain[ThrusterSelection+1][23] = msg.Gain_i_yaw;
+        gain[ThrusterSelection+1][24] = msg.Gain_acc_roll;
+        gain[ThrusterSelection+1][25] = msg.Gain_acc_pitch;
+        gain[ThrusterSelection+1][26] = msg.Gain_acc_yaw;
+        gain[ThrusterSelection+1][27] = msg.Gain_i_vel_roll;
+        gain[ThrusterSelection+1][28] = msg.Gain_i_vel_pitch;
+        gain[ThrusterSelection+1][29] = msg.Gain_i_vel_yaw;
+
+        //std::string str = "/home/yash/auv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
         std::string str = "/home/teamauv/teamauv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
->>>>>>> upstream/testing-controls
         std::fstream fp;
         str = str.append(_gain_file).c_str();
-        fp.open(str.c_str(), std::ios::trunc | std::ios::out);
+        fp.open(str.append(".cp").c_str(), std::ios::trunc | std::ios::out);
         if(fp.is_open()) _controlParams[n_map]->write(&fp);
         else ROS_INFO("UNABLE TO OPEN FILE %s", _gain_file.c_str());
     }
 
     bool StateController::checkError(){
         for(int i = 0; i<3; i++){//check goaltype
-            std::cout<<"GoalType"<<GoalType;
+            //std::cout<<"GoalType"<<GoalType;
             if(GoalType == 0){
-<<<<<<< HEAD
-                if(_pose_error[i] >= 0.005 || _vel_error[i] >= 0.005)
-=======
                 if(_pose_error[i] >= 0.05 || _vel_error[i] >= 0.05)
->>>>>>> upstream/testing-controls
                     return false;
             }
             else if(GoalType == 1){
@@ -180,7 +206,7 @@ namespace kraken_controller{
         double **gain = _controlParams[n_map]->getGain();
         //_controlParams[n_map]->write(std::cerr);
         if(GoalType == 0){
-            thrust->data[2] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][3]*_pose_error[3] + gain[0][6]*_pose_error[6] + gain[0][15]*_pose_error[11] + gain[0][18]*_pose_error[14] + gain[0][21]*_pose_error[17];
+            thrust->data[2] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][3]*_pose_error[3] + gain[0][6]*_pose_error[6] - gain[0][15]*_pose_error[11] - gain[0][18]*_pose_error[14] - gain[0][21]*_pose_error[17];
 
             thrust->data[3] = offset[1] + gain[1][0]*_pose_error[0] + gain[1][3]*_pose_error[3] + gain[1][6]*_pose_error[6] + gain[1][15]*_pose_error[11] + gain[1][18]*_pose_error[14] + gain[1][21]*_pose_error[17];
 
@@ -188,7 +214,7 @@ namespace kraken_controller{
             thrust->data[5] = 0;//offset[3] + gain[3][0]*_pose_error[0] + gain[3][3]*_pose_error[3] + gain[3][6]*_pose_error[6] + gain[3][15]*_pose_error[9] + gain[3][19]*_pose_error[12] + gain[3][21]*_pose_error[15];
             thrust->data[0] = offset[4] + gain[4][2]*_pose_error[2] + gain[4][5]*_pose_error[5] + gain[4][8]*_pose_error[8] + gain[4][17]*_pose_error[10] + gain[4][20]*_pose_error[13] + gain[4][23]*_pose_error[16];
 
-            thrust->data[1] = offset[5] + gain[5][2]*_pose_error[2] + gain[5][5]*_pose_error[5] + gain[5][8]*_pose_error[8];// + gain[5][17]*_pose_error[10] + gain[5][20]*_pose_error[13] + gain[5][23]*_pose_error[16];
+            thrust->data[1] = offset[5] + gain[5][2]*_pose_error[2] + gain[5][5]*_pose_error[5] + gain[5][8]*_pose_error[8] - gain[5][17]*_pose_error[10] - gain[5][20]*_pose_error[13] - gain[5][23]*_pose_error[16];
         }
         /*else{
             thrust->data[0] = offset[0] + gain[0][0]*_vel_error[0] + gain[0][3]*_vel_error[3] + gain[0][6]*_vel_error[6] + gain[0][15]*_vel_error[11] + gain[0][18]*_vel_error[14] + gain[0][21]*_vel_error[17];
