@@ -1,0 +1,8 @@
+prefix=/home/sangeet/image_transport_ws/devel
+
+Name: image_transport_tutorial
+Description: Description of image_transport_tutorial
+Version: 0.0.0
+Cflags: -I/home/sangeet/image_transport_ws/devel/include
+Libs: -L/home/sangeet/image_transport_ws/devel/lib 
+Requires: cv_bridge image_transport message_runtime sensor_msgs

@@ -1,0 +1,8 @@
+prefix=/home/sangeet/image_transport_ws/install
+
+Name: learning_image_transport
+Description: Description of learning_image_transport
+Version: 0.0.0
+Cflags: 
+Libs: -L/home/sangeet/image_transport_ws/install/lib 
+Requires: 

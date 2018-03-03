@@ -20,7 +20,7 @@ public:
 
 private:
     float ajuste = 0.15;
-
+    int count=0;
     // Trackers
     tASMS asms;
     tKCF kcf;

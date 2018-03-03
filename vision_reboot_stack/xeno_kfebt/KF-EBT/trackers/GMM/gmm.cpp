@@ -13,11 +13,14 @@ Rect GMM::track(Mat frame,Rect region){
 
         pMOG2->apply(frame,fgMaskMOG2);
 
-        Mat img_ycrcb;
+        Mat img_hsv;
+
       //  imshow("FG Mask MOG 2", fgMaskMOG2);
 
-        cvtColor(img,img_ycrcb,CV_BGR2YCrCb);
+        //cvtColor(img,img_ycrcb,CV_BGR2YCrCb);
+          cvtColor(img,img_hsv,CV_BGR2HSV);
         //TEST BLUE GOOD IF IT GIVES result
+
         Mat blue_tub(frame.rows,frame.cols,CV_8UC1);
         Mat blue_ycrcb(frame.rows,frame.cols,CV_8UC1);
         int no_pixels=0;
@@ -26,7 +29,7 @@ Rect GMM::track(Mat frame,Rect region){
             for (int j = 0; j < frame.cols; j++)
             {
               //  h = get_h((int)img_hsv.at<Vec3b>(i,j)[0],(int)img_hsv.at<Vec3b>(i,j)[1],(int)img_hsv.at<Vec3b>(i,j)[2]);
-                if((int)fgMaskMOG2.at<uchar>(i,j)==255 && (int)img_ycrcb.at<Vec3b>(i,j)[1] > 154 && (int)img_ycrcb.at<Vec3b>(i,j)[1] < 255 && (int)img_ycrcb.at<Vec3b>(i,j)[2] < 255 && (int)img_ycrcb.at<Vec3b>(i,j)[1] > 153)
+                if((int)fgMaskMOG2.at<uchar>(i,j)==255 && (int)img_hsv.at<Vec3b>(i,j)[0] > 150 )
                 {
                     blue_tub.at<uchar>(i,j)=255;
                     no_pixels++;
@@ -39,7 +42,7 @@ Rect GMM::track(Mat frame,Rect region){
         cout<<"pixles "<<no_pixels<<endl;
         //  imshow("blue_tub",blue_tub);
           //  waitKey(10);
-          GaussianBlur(blue_tub,blue_tub,Size(15,15),2,2);
+          GaussianBlur(blue_tub,blue_tub,Size(45,45),2,2);
 
           vector<vector<Point> > contours;
           vector<Vec4i> hierarchy;
@@ -77,9 +80,10 @@ Rect GMM::track(Mat frame,Rect region){
                     }
                     approxPolyDP( Mat(contours[idx]), contours_poly[idx], 3, true );
                     minEnclosingCircle( (Mat)contours_poly[idx], center[idx], radius[idx] );
+
                 }
                 Scalar color( 0, 0, 255 );
-
+              rect_gmm=boundingRect( Mat(contours_poly[largestComp]) );
 
                 vertex.y = center[largestComp].y - radius[largestComp];
                 vertex.x = center[largestComp].x - radius[largestComp];
@@ -87,6 +91,8 @@ Rect GMM::track(Mat frame,Rect region){
                 vertex_opp.x = center[largestComp].x + radius[largestComp];
                 drawContours( dst, contours, largestComp, color, FILLED, LINE_8, hierarchy );
                 rectangle( drawing, vertex, vertex_opp , color, 2, 8, 0 );
+
+
                 //circle( drawing, center[largestComp], (int)radius[largestComp], color, 2, 8, 0 );
                 /*
                 Point2f vertex;
@@ -96,7 +102,7 @@ Rect GMM::track(Mat frame,Rect region){
                 vertex_opp.y = 150;
                 vertex_opp.x = 200;*/
               //  int  keyboard = waitKey( 30 );
-               rect_gmm= Rect(vertex,vertex_opp);
+            //   rect_gmm= Rect(vertex,vertex_opp);
                cout<<(int)vertex.x<<"  "<<(int)vertex.y<<endl;
                return rect_gmm;
             }
