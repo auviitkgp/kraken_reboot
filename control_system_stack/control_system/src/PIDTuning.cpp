@@ -3,6 +3,7 @@
 #include <actionlib/client/terminal_state.h>
 #include "resources/topicHeader.h"
 #include "kraken_msgs/advancedControllerAction.h"
+#include "tf/transform_listener.h"
 
 int main(int argc, char **argv){
     ros::init(argc, argv, "PIDTuning");
@@ -13,49 +14,116 @@ int main(int argc, char **argv){
     _actionClient.waitForServer();
     ROS_INFO("CONTROL_SERVER STARTED, SENDING GOAL.");
     kraken_msgs::advancedControllerGoal _goal;
-    _goal.GoalType = 0;
-<<<<<<< HEAD
 
+    tf::TransformListener listener;
+    tf::StampedTransform transform;
+    try{
+        listener.lookupTransform("base_link", "odom",ros::Time(0), transform);
+    }
+    catch(tf::TransformException ex){
+    ROS_ERROR("%s",ex.what());
+    ros::Duration(1.0).sleep();
+    }
+
+    _goal.GoalType = 0;
     if(argv[1] == std::string("surge")){
-=======
-    if(argv[1] == "surge"){
->>>>>>> upstream/testing-controls
-        _goal.pose.position.x = 2;
-        _goal.pose.position.y = 0;
-        _goal.pose.position.z = 0;
-        _goal.pose.orientation.x = 0;
-        _goal.pose.orientation.y = 0;
-        _goal.pose.orientation.z = 0;
-        _goal.pose.orientation.w = 1;
-<<<<<<< HEAD
+        geometry_msgs::PoseStamped temp;
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = "/base_link";
+        pose.header.stamp = ros::Time();
+        pose.pose.position.x = 2;
+        pose.pose.position.y = 0;
+        pose.pose.position.z = 0;
+        pose.pose.orientation.x = 0;
+        pose.pose.orientation.y = 0;
+        pose.pose.orientation.z = 0;
+        pose.pose.orientation.w = 1;
+        //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
+        listener.transformPose("/odom", pose, temp);
+
+        _goal.pose.position.x = temp.pose.position.x ;
+        _goal.pose.position.y = temp.pose.position.y ;
+        _goal.pose.position.z = temp.pose.position.z ;
+        _goal.pose.orientation.x = temp.pose.orientation.x;
+        _goal.pose.orientation.y = temp.pose.orientation.y;
+        _goal.pose.orientation.z = temp.pose.orientation.z;
+        _goal.pose.orientation.w = temp.pose.orientation.w;
         std::cout<<argv[1]<<" \n";
     }
-    if(argv[1] == std::string("depth")){
-=======
+    else if(argv[1] == std::string("depth")){
+        geometry_msgs::PoseStamped temp;
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = "/base_link";
+        pose.header.stamp = ros::Time();
+        pose.pose.position.x = 0;
+        pose.pose.position.y = 0;
+        pose.pose.position.z = 1.5;
+        pose.pose.orientation.x = 0;
+        pose.pose.orientation.y = 0;
+        pose.pose.orientation.z = 0;
+        pose.pose.orientation.w = 1;
+        //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
+        listener.transformPose("/odom", pose, temp);
+
+        _goal.pose.position.x = temp.pose.position.x ;
+        _goal.pose.position.y = temp.pose.position.y ;
+        _goal.pose.position.z = temp.pose.position.z ;
+        _goal.pose.orientation.x = temp.pose.orientation.x;
+        _goal.pose.orientation.y = temp.pose.orientation.y;
+        _goal.pose.orientation.z = temp.pose.orientation.z;
+        _goal.pose.orientation.w = temp.pose.orientation.w;
+        std::cout<<argv[1]<<" \n";
     }
-    if(argv[1] == "depth"){
->>>>>>> upstream/testing-controls
-        _goal.pose.position.x = 0;
-        _goal.pose.position.y = 0;
-        _goal.pose.position.z = 1;
-        _goal.pose.orientation.x = 0;
-        _goal.pose.orientation.y = 0;
-        _goal.pose.orientation.z = 0;
-        _goal.pose.orientation.w = 1;
+    else if(argv[1] == std::string("yaw")){
+        geometry_msgs::PoseStamped temp;
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = "/base_link";
+        pose.header.stamp = ros::Time();
+        pose.pose.position.x = 0;
+        pose.pose.position.y = 0;
+        pose.pose.position.z = 0;
+        pose.pose.orientation.x = 0;
+        pose.pose.orientation.y = 0;
+        pose.pose.orientation.z = 1;
+        pose.pose.orientation.w = 0;
+        //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
+        listener.transformPose("/odom", pose, temp);
+
+        _goal.pose.position.x = temp.pose.position.x ;
+        _goal.pose.position.y = temp.pose.position.y ;
+        _goal.pose.position.z = temp.pose.position.z ;
+        _goal.pose.orientation.x = temp.pose.orientation.x;
+        _goal.pose.orientation.y = temp.pose.orientation.y;
+        _goal.pose.orientation.z = temp.pose.orientation.z;
+        _goal.pose.orientation.w = temp.pose.orientation.w;
+        std::cout<<argv[1]<<" \n";
     }
-<<<<<<< HEAD
-    if(argv[1] == std::string("yaw")){
-=======
-    if(argv[1] == "yaw"){
->>>>>>> upstream/testing-controls
-        _goal.pose.position.x = 0;
-        _goal.pose.position.y = 0;
-        _goal.pose.position.z = 0;
-        _goal.pose.orientation.x = 0;
-        _goal.pose.orientation.y = 0;
-        _goal.pose.orientation.z = 1;
-        _goal.pose.orientation.w = 0;
+    else if(argv[1] == std::string("pitch")){
+        geometry_msgs::PoseStamped temp;
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = "/base_link";
+        pose.header.stamp = ros::Time();
+        pose.pose.position.x = 0;
+        pose.pose.position.y = 0;
+        pose.pose.position.z = 0;
+        pose.pose.orientation.x = 0;
+        pose.pose.orientation.y = 0.382;
+        pose.pose.orientation.z = 0;
+        pose.pose.orientation.w = 0.924;
+        //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
+        listener.transformPose("/odom", pose, temp);
+
+        _goal.pose.position.x = temp.pose.position.x ;
+        _goal.pose.position.y = temp.pose.position.y ;
+        _goal.pose.position.z = temp.pose.position.z ;
+        _goal.pose.orientation.x = temp.pose.orientation.x;
+        _goal.pose.orientation.y = temp.pose.orientation.y;
+        _goal.pose.orientation.z = temp.pose.orientation.z;
+        _goal.pose.orientation.w = temp.pose.orientation.w;
+        std::cout<<argv[1]<<" \n";
     }
+    else
+        return 0;
     _actionClient.sendGoal(_goal);
     bool finished_before_timeout = _actionClient.waitForResult(ros::Duration(30.0));
     if(finished_before_timeout){

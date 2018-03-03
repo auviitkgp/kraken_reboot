@@ -6,34 +6,37 @@ namespace kraken_controller{
         _pub6 = n.advertise<kraken_msgs::thrusterData6Thruster>(topics::CONTROL_PID_THRUSTER6, 5);
         //_subState = n.subscribe<nav_msgs::Odometry>("odometry/filtered", 5, &StateController::updateState, &_state);
         start = true;
-<<<<<<< HEAD
-        _pose_Goal.position.x = 0;
-        _pose_Goal.position.y = 0;
-        _pose_Goal.position.z = 0;
-        _pose_Goal.orientation.x = 0;
-        _pose_Goal.orientation.y = 0;
-        _pose_Goal.orientation.z = 0;
-        _pose_Goal.orientation.w = 1;
-=======
-
-        tf::TransformListener listener;
-        ros::Rate rate(10.0);
         tf::StampedTransform transform;
         try{
-            listener.lookupTransform("/base_link", "/odom", ros::Time(0), transform);
+            _state.listener.lookupTransform("base_link", "odom", ros::Time(0), transform);
         }
         catch(tf::TransformException ex){
         ROS_ERROR("%s",ex.what());
         ros::Duration(1.0).sleep();
         }
-        _pose_Goal.position.x = transform.getOrigin().x();
-        _pose_Goal.position.y = transform.getOrigin().y();
-        _pose_Goal.position.z = transform.getOrigin().z();
-        _pose_Goal.orientation.x = transform.getRotation().x();
-        _pose_Goal.orientation.y = transform.getRotation().y();
-        _pose_Goal.orientation.z = transform.getRotation().z();
-        _pose_Goal.orientation.w = transform.getRotation().w();
->>>>>>> upstream/testing-controls
+
+        geometry_msgs::PoseStamped temp;
+        geometry_msgs::PoseStamped pose;
+        pose.header.frame_id = "/base_link";
+        pose.header.stamp = ros::Time();
+        pose.pose.position.x = 0;
+        pose.pose.position.y = 0;
+        pose.pose.position.z = 0;
+        pose.pose.orientation.x = 0;
+        pose.pose.orientation.y = 0;
+        pose.pose.orientation.z = 0;
+        pose.pose.orientation.w = 1;
+
+        //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
+        _state.listener.transformPose("/odom", pose, temp);
+        _pose_Goal.position.x = pose.pose.position.x;
+        _pose_Goal.position.y = pose.pose.position.y;
+        _pose_Goal.position.z = pose.pose.position.z;
+        _pose_Goal.orientation.x = pose.pose.orientation.x;
+        _pose_Goal.orientation.y = pose.pose.orientation.y;
+        _pose_Goal.orientation.z = pose.pose.orientation.z;
+        _pose_Goal.orientation.w = pose.pose.orientation.w;
+        std::cout<<temp.pose.position.x<<"\n"<<temp.pose.position.y<<"\n"<<temp.pose.position.z<<"\n"<<temp.pose.orientation.x<<"\n"<<temp.pose.orientation.y<<"\n"<<temp.pose.orientation.z<<"\n"<<temp.pose.orientation.w<<"\n";
         GoalFlag = false;
         _state.poseParam();
     }
@@ -56,13 +59,13 @@ namespace kraken_controller{
             _pose_Goal.orientation.y = msg->pose.orientation.y;
             _pose_Goal.orientation.z = msg->pose.orientation.z;
             _pose_Goal.orientation.w = msg->pose.orientation.w;
-            // std::cout<<"goalx    "<<msg->pose.position.x<<"\n";
-            // std::cout<<"goaly    "<<msg->pose.position.y<<"\n";
-            // std::cout<<"goalz    "<<msg->pose.position.z<<"\n";
-            // std::cout<<"goalorix    "<<msg->pose.orientation.x<<"\n";
-            // std::cout<<"goaloriy    "<<msg->pose.orientation.y<<"\n";
-            // std::cout<<"goaloriz    "<<msg->pose.orientation.z<<"\n";
-            // std::cout<<"goaloriw    "<<msg->pose.orientation.w<<"\n";
+            std::cout<<"goalx -- "<<msg->pose.position.x<<"\n";
+            std::cout<<"goaly -- "<<msg->pose.position.y<<"\n";
+            std::cout<<"goalz -- "<<msg->pose.position.z<<"\n";
+            std::cout<<"goalori.x -- "<<msg->pose.orientation.x<<"\n";
+            std::cout<<"goalori.y -- "<<msg->pose.orientation.y<<"\n";
+            std::cout<<"goalori.z -- "<<msg->pose.orientation.z<<"\n";
+            std::cout<<"goalori.w -- "<<msg->pose.orientation.w<<"\n";
             ROS_INFO("POSE GOAL RECEIVED");
         }
         else if(msg->GoalType == 1){
@@ -105,17 +108,29 @@ namespace kraken_controller{
     void ControlServer::transformGoal(geometry_msgs::Pose *pose, geometry_msgs::Twist *twist){
         geometry_msgs::Pose transPose;
         geometry_msgs::Twist transTwist;
-
-        geometry_msgs::PointStamped tempPose;
         geometry_msgs::PointStamped tempTwist;
+        geometry_msgs::PoseStamped temp;
+        geometry_msgs::PoseStamped transtemp;
 
+        temp.header.frame_id = "/odom";
+        temp.header.stamp = ros::Time();
+        temp.pose.position.x = pose->position.x;
+        temp.pose.position.y = pose->position.y;
+        temp.pose.position.z = pose->position.z;
+        temp.pose.orientation.x = pose->orientation.x;
+        temp.pose.orientation.y = pose->orientation.y;
+        temp.pose.orientation.z = pose->orientation.z;
+        temp.pose.orientation.w = pose->orientation.w;
+        //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
+        _state.listener.transformPose("/base_link", temp, transtemp);
 
-
-        tempPose.header.frame_id = "odom"; //////
-        tempPose.header.stamp = ros::Time();
-        tempPose.point.x = pose->position.x;
-        tempPose.point.y = pose->position.y;
-        tempPose.point.z = pose->position.z;
+        transPose.position.x = transtemp.pose.position.x ;
+        transPose.position.y = transtemp.pose.position.y ;
+        transPose.position.z = transtemp.pose.position.z ;
+        transPose.orientation.x = transtemp.pose.orientation.x;
+        transPose.orientation.y = transtemp.pose.orientation.y;
+        transPose.orientation.z = transtemp.pose.orientation.z;
+        transPose.orientation.w = transtemp.pose.orientation.w;
 
         tempTwist.header.frame_id = "base_link";  //////
         tempTwist.header.stamp = ros::Time();
@@ -125,7 +140,7 @@ namespace kraken_controller{
 
         try{
             geometry_msgs::PointStamped temp;
-            _state.listener.transformPoint("base_link", tempPose, temp);
+            _state.listener.transformPoint("base_link", tempTwist, temp);
             transPose.position.x = temp.point.x;
             transPose.position.y = temp.point.y;
             transPose.position.z = temp.point.z;
@@ -135,7 +150,7 @@ namespace kraken_controller{
         }
         try{
             geometry_msgs::PointStamped temp;
-            _state.listener.transformPoint("base_link", tempTwist, temp);
+            _state.listener.transformPoint("odom", tempTwist, temp);
             transTwist.linear.x = temp.point.x;
             transTwist.linear.y = temp.point.y;
             transTwist.linear.z = temp.point.z;
@@ -157,24 +172,6 @@ namespace kraken_controller{
             _state.setThrusters(&thrust);
             _pub6.publish(thrust);
         }
-        // else if(GoalFlag){
-        //     if (_ControlServer->isPreemptRequested() || !ros::ok()){
-        //          _ControlServer->setPreempted();
-        //          _state.stop();
-        //          ROS_INFO("CONTROLSERVER IS PREEMPTED");
-        //     }
-        //     else{
-        //         transformGoal(&_pose_Goal, &_twist_Goal);
-        //         kraken_msgs::thrusterData6Thruster thrust;
-        //         _state.setThrusters(&thrust);
-        //         _pub6.publish(thrust);
-        //         if(_state.checkError() == true){
-        //             GoalFlag = false;
-        //             start = true;
-        //             _ControlServer->setSucceeded();
-        //         }
-        //     }
-        // }
     }
 
     void ControlServer::loadParams(const std::vector<std::string> &filenames){
@@ -182,11 +179,11 @@ namespace kraken_controller{
     }
 
     void ControlServer::callback0(control_system::paramsConfig &msg, uint32_t level){
-        if(GoalFlag) _state.changeParams(msg, 0);
+         _state.changeParams(msg, 2);
     }
 
     void ControlServer::callback1(control_system::paramsConfig &msg, uint32_t level){
-        if(GoalFlag)  _state.changeParams(msg, 1);
+        _state.changeParams(msg, 0);
     }
 
     void ControlServer::callback2(control_system::paramsConfig &msg, uint32_t level){
