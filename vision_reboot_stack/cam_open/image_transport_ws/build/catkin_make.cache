@@ -1,0 +1,2 @@
+image_transport_tutorial:learning_image_transport
+-DCATKIN_DEVEL_PREFIX=/home/sangeet/image_transport_ws/devel -DCMAKE_INSTALL_PREFIX=/home/sangeet/image_transport_ws/install -G Unix Makefiles
