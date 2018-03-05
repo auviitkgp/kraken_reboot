@@ -31,7 +31,7 @@ void processVideo(Mat);
 void initializeVideo(Mat);
 void msrect(Mat);
 ros::Subscriber sub;
-
+ros::Publisher pub_point;
 
 static void OnDetect( const std_msgs::Int64MultiArray::ConstPtr& point){
     /*if( event != EVENT_LBUTTONDOWN || rectOK)
@@ -56,7 +56,7 @@ static void OnDetect( const std_msgs::Int64MultiArray::ConstPtr& point){
   cout << initRect.width<<"Y" << " " << endl;
   cout << initRect.height<<"Y" << " " << endl;
     flag = 2;
-   sub.shutdown();
+  // sub.shutdown();
 
 }
 void initializeVideo(Mat image) {
@@ -100,9 +100,16 @@ void processVideo(Mat image){
 
       // Report result
       Rect output = tracker.track(image);
+
+      std_msgs::Int64MultiArray s;
+      s.data.push_back(output.x);
+      s.data.push_back(output.y);
+      s.data.push_back(output.width);
+      pub_point.publish(s);
       Mat saida = image.clone();
       rectangle(saida, output,Scalar(0,255,0), 2);
       imshow("result", saida);
+
       waitKey(10);
 
   return ;
@@ -164,11 +171,8 @@ int main(int argc, char** argv){
   start_track=0;
   ros::init(argc, argv, "object");
   ros::NodeHandle nh;
-   image_transport::ImageTransport it(nh);
+  image_transport::ImageTransport it(nh);
 
-
-  // ros::Subscriber sub = nh.subscribe("state", 1, OnDetect);
-  cout<<flag<<"gus"<<endl;
 
 
 
@@ -177,9 +181,6 @@ int main(int argc, char** argv){
 
   ros::Rate r(10);
 
-  //   sub.shutdown();
-//  while(flag==0)
-//  {
 
 
     cout<<"hmm"<<endl;
@@ -188,6 +189,7 @@ int main(int argc, char** argv){
 //   r.sleep();
 //  }
   image_transport::Subscriber image_sub_ = it.subscribe("input", 1, call);
+  pub_point=nh.advertise<std_msgs::Int64MultiArray>("tensor_input", 1);
   cout<<flag<<"falg"<<endl;
 
   ros::spin();
