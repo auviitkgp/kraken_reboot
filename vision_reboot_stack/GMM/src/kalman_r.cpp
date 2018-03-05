@@ -53,7 +53,7 @@ void kfilter(const std_msgs::Int64MultiArray::ConstPtr& num) {
  	   Point statePt(estimated.at<float>(0),estimated.at<float>(1));
 	   cout<<"ESTIMATED :  "<<statePt<<endl;
 
- 	 	if(abs((statePt.x-measPt.x)*(statePt.y-measPt.y)) < 100){
+ 	 	if(abs((statePt.x-measPt.x)*(statePt.y-measPt.y)) < 70){
  			flag++;
  			cout << flag << endl ;
  		}

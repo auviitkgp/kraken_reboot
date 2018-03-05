@@ -77,6 +77,7 @@ void processVideo(Mat img) {
             vector<Point2f>center( contours.size() );
             vector<float>radius( contours.size() );
             vector<vector<Point> > contours_poly( contours.size() );
+            Rect boundRect;
             Point2f vertex;
             Point2f vertex_opp;
 
@@ -92,6 +93,7 @@ void processVideo(Mat img) {
 
                 approxPolyDP( Mat(contours[idx]), contours_poly[idx], 3, true );
                 minEnclosingCircle( (Mat)contours_poly[idx], center[idx], radius[idx] );
+                boundRect = boundingRect( Mat(contours_poly[idx]) );
             }
 
             Scalar color( 0, 0, 255 );
@@ -101,13 +103,14 @@ void processVideo(Mat img) {
             vertex_opp.y = center[largestComp].y + radius[largestComp];
             vertex_opp.x = center[largestComp].x + radius[largestComp];
             drawContours( dst, contours, largestComp, color, FILLED, LINE_8, hierarchy );
-            rectangle( drawing, vertex, vertex_opp , color, 2, 8, 0 );
+          //  rectangle( drawing, vertex, vertex_opp , color, 2, 8, 0 );
+             rectangle( drawing, boundRect.tl(), boundRect.br(), color, 2, 8, 0 );
             circle( drawing, center[largestComp], (int)radius[largestComp], color, 2, 8, 0 );
            imshow("contours",drawing);
 
-          s.data.push_back(center[largestComp].y);
-         	s.data.push_back(center[largestComp].x);
-         	s.data.push_back(radius[largestComp]);
+          s.data.push_back(vertex.y);
+         	s.data.push_back(vertex.x);
+         	s.data.push_back(2*radius[largestComp]);
 
            ROS_INFO("Values sent to topic-print\n");
            pub_n.publish(s);
