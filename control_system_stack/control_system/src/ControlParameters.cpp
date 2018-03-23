@@ -33,8 +33,10 @@ namespace kraken_controller{
             file >> _name;
             for(int i = 0; i<_row; i++){
                 file >> _offset[i];
+                //std::cout<<_offset[i]<<"---"<<i<<" offset\n";
                 for(int j = 0; j<_cols; j++){
                     file >> _gain[i][j];
+                    //std::cout<<_gain[i][j]<<"---"<<i<<" gain\n";
                 }
             }
         }
@@ -66,10 +68,19 @@ namespace kraken_controller{
     }
 
     double* ControlParameters::getOffset(){
+
         return _offset;
     }
 
     double** ControlParameters::getGain(){
+        // for(int i=0;i<6;i++)
+        // {
+        //      for (int j=0;j<30;j++)
+        //     {
+        //         std::cout << _gain[i][j]<<" "<<i <<" gain"<<j<< '\n';
+        //     }
+        // }
+
         return _gain;
     }
     const std::string  ControlParameters::getName(){

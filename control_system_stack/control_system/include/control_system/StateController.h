@@ -12,6 +12,7 @@
 #include "geometry_msgs/Twist.h"
 #include "resources/topicHeader.h"
 #include "control_system/paramsConfig.h"
+#include "kraken_msgs/PIDError.h"
 
 namespace kraken_controller{
     class StateController{
@@ -28,6 +29,7 @@ namespace kraken_controller{
         bool checkError();
         void setThrusters(kraken_msgs::thrusterData6Thruster *);
         tf::TransformListener listener;
+        ros::Publisher _PidErrorPub;
         std::string _gain_file;
         nav_msgs::Odometry _feedback;
         std::vector<ControlParameters*> _controlParams;
