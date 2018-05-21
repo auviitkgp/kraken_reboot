@@ -19,7 +19,11 @@ namespace kraken_controller{
         geometry_msgs::PoseStamped temp;
         geometry_msgs::PoseStamped pose;
         pose.header.frame_id = "/base_link";
+<<<<<<< HEAD
+        pose.header.stamp = ros::Time();
+=======
         pose.header.stamp = ros::Time(0);
+>>>>>>> upstream/testing-controls
         pose.pose.position.x = 0;
         pose.pose.position.y = 0;
         pose.pose.position.z = 0;
@@ -30,6 +34,15 @@ namespace kraken_controller{
 
         //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
         _state.listener.transformPose("/odom", pose, temp);
+<<<<<<< HEAD
+        _pose_Goal.position.x = pose.pose.position.x;
+        _pose_Goal.position.y = pose.pose.position.y;
+        _pose_Goal.position.z = pose.pose.position.z;
+        _pose_Goal.orientation.x = pose.pose.orientation.x;
+        _pose_Goal.orientation.y = pose.pose.orientation.y;
+        _pose_Goal.orientation.z = pose.pose.orientation.z;
+        _pose_Goal.orientation.w = pose.pose.orientation.w;
+=======
         _pose_Goal.position.x = temp.pose.position.x;
         _pose_Goal.position.y = temp.pose.position.y;
         _pose_Goal.position.z = temp.pose.position.z;
@@ -37,6 +50,7 @@ namespace kraken_controller{
         _pose_Goal.orientation.y = temp.pose.orientation.y;
         _pose_Goal.orientation.z = temp.pose.orientation.z;
         _pose_Goal.orientation.w = temp.pose.orientation.w;
+>>>>>>> upstream/testing-controls
         std::cout<<temp.pose.position.x<<"\n"<<temp.pose.position.y<<"\n"<<temp.pose.position.z<<"\n"<<temp.pose.orientation.x<<"\n"<<temp.pose.orientation.y<<"\n"<<temp.pose.orientation.z<<"\n"<<temp.pose.orientation.w<<"\n";
         GoalFlag = false;
         _state.poseParam();
@@ -60,6 +74,15 @@ namespace kraken_controller{
             _pose_Goal.orientation.y = msg->pose.orientation.y;
             _pose_Goal.orientation.z = msg->pose.orientation.z;
             _pose_Goal.orientation.w = msg->pose.orientation.w;
+<<<<<<< HEAD
+            std::cout<<"goalx -- "<<msg->pose.position.x<<"\n";
+            std::cout<<"goaly -- "<<msg->pose.position.y<<"\n";
+            std::cout<<"goalz -- "<<msg->pose.position.z<<"\n";
+            std::cout<<"goalori.x -- "<<msg->pose.orientation.x<<"\n";
+            std::cout<<"goalori.y -- "<<msg->pose.orientation.y<<"\n";
+            std::cout<<"goalori.z -- "<<msg->pose.orientation.z<<"\n";
+            std::cout<<"goalori.w -- "<<msg->pose.orientation.w<<"\n";
+=======
             std::cout<<"goalx -- "<<_pose_Goal.position.x<<"\n";
             std::cout<<"goaly -- "<<_pose_Goal.position.y<<"\n";
             std::cout<<"goalz -- "<<_pose_Goal.position.z<<"\n";
@@ -67,6 +90,7 @@ namespace kraken_controller{
             std::cout<<"goalori.y -- "<<_pose_Goal.orientation.y<<"\n";
             std::cout<<"goalori.z -- "<<_pose_Goal.orientation.z<<"\n";
             std::cout<<"goalori.w -- "<<_pose_Goal.orientation.w<<"\n";
+>>>>>>> upstream/testing-controls
             ROS_INFO("POSE GOAL RECEIVED");
         }
         else if(msg->GoalType == 1){
@@ -115,6 +139,17 @@ namespace kraken_controller{
 
         temp.header.frame_id = "/odom";
         temp.header.stamp = ros::Time();
+<<<<<<< HEAD
+        temp.pose.position.x = pose->position.x;
+        temp.pose.position.y = pose->position.y;
+        temp.pose.position.z = pose->position.z;
+        temp.pose.orientation.x = pose->orientation.x;
+        temp.pose.orientation.y = pose->orientation.y;
+        temp.pose.orientation.z = pose->orientation.z;
+        temp.pose.orientation.w = pose->orientation.w;
+        //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
+        _state.listener.transformPose("/base_link", temp, transtemp);
+=======
         temp.pose.position.x = _pose_Goal.position.x;
         temp.pose.position.y = _pose_Goal.position.y;
         temp.pose.position.z = _pose_Goal.position.z;
@@ -125,6 +160,7 @@ namespace kraken_controller{
         //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
         _state.listener.transformPose("/base_link", temp, transtemp);
         //std::cout<<transtemp.pose.position.x<<"X\n"<<transtemp.pose.position.y<<"Y\n"<<transtemp.pose.position.z<<"Z\n"<<transtemp.pose.orientation.x<<"ORx\n"<<transtemp.pose.orientation.y<<"ORy\n"<<transtemp.pose.orientation.z<<"ORz\n"<<transtemp.pose.orientation.w<<"ORw\n";
+>>>>>>> upstream/testing-controls
 
         transPose.position.x = transtemp.pose.position.x ;
         transPose.position.y = transtemp.pose.position.y ;
@@ -152,6 +188,19 @@ namespace kraken_controller{
         // }
         try{
             geometry_msgs::PointStamped temp;
+<<<<<<< HEAD
+            _state.listener.transformPoint("base_link", tempTwist, temp);
+            transPose.position.x = temp.point.x;
+            transPose.position.y = temp.point.y;
+            transPose.position.z = temp.point.z;
+        }
+        catch(tf::TransformException& ex){
+            ROS_ERROR("RECEIVED AN EXCEPTION IN TRANSFORMING THE POSE_GOAL %s", ex.what());
+        }
+        try{
+            geometry_msgs::PointStamped temp;
+=======
+>>>>>>> upstream/testing-controls
             _state.listener.transformPoint("odom", tempTwist, temp);
             transTwist.linear.x = temp.point.x;
             transTwist.linear.y = temp.point.y;
