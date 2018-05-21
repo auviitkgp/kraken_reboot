@@ -55,7 +55,8 @@ namespace kraken_controller{
 
         double roll, pitch, yaw;
         tf::Quaternion q(transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
-        //printf("%f %f %f %f \n", transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
+        //std::cout<<transPose.position.x<<"x\n"<<transPose.position.y<<"y\n"<<transPose.position.z<<"z\n";
+        //printf("X%f Y%f Z%f W%f \n", transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
         tf::Matrix3x3 temp(q);
         temp.getRPY(roll, pitch, yaw);
 
@@ -69,9 +70,15 @@ namespace kraken_controller{
         _pose_error[10] = pitch;
         _pose_error[11] = yaw;
 
+<<<<<<< HEAD
         // for(int i = 9; i<12; i++){
         //     std::cout<<i<<_pose_error[i]<<"\n";
         // }
+=======
+        // for(int i = 0; i<3; i++){
+        //     std::cout<<i<<"---"<<_pose_error[i]<<"\n";
+        //  }
+>>>>>>> upstream/testing-controls
         _vel_error[3] = _vel_error[0] - transTwist.linear.x;
         _vel_error[4] = _vel_error[1] - transTwist.linear.y;
         _vel_error[5] = _vel_error[2] - transTwist.linear.z;
@@ -91,9 +98,23 @@ namespace kraken_controller{
         _vel_error[9] = transTwist.angular.x;
         _vel_error[10] = transTwist.angular.y;
         _vel_error[11] = transTwist.angular.z;
-        // for(int i=0; i<18; i++){
-        //     printf("%d %f \n",i, _pose_error[i]);
+        //  for(int i=0; i<18; i++){
+        //      printf("%d %f \n",i, _pose_error[i]);
         // }
+        kraken_msgs::PIDError error;
+        error.linear.header.frame_id = "/base_link";
+        error.linear.header.stamp = ros::Time();
+        error.linear.point.x = _pose_error[0];
+        error.linear.point.y = _pose_error[1];
+        error.linear.point.z = _pose_error[2];
+
+        error.angular.header.frame_id = "/base_link";
+        error.angular.header.stamp = ros::Time();
+        error.angular.point.x = _pose_error[9];
+        error.angular.point.y = _pose_error[10];
+        error.angular.point.z = _pose_error[11];
+
+        _PidErrorPub.publish(error);
     }
 
     void StateController::loadParams(const std::vector<std::string> &filenames){
@@ -102,6 +123,7 @@ namespace kraken_controller{
             param->load(filenames[i]);
             _controlParams.push_back(param);
             _controlParams_index[param->getName()] = i;
+            std::cout<<_controlParams_index[param->getName()]<<"----"<<filenames[i]<<"\n";
             param->write(std::cerr);
         }
     }
@@ -183,6 +205,7 @@ namespace kraken_controller{
         fp.open(str.append(".cp").c_str(), std::ios::trunc | std::ios::out);
         if(fp.is_open()) _controlParams[n_map]->write(&fp);
         else ROS_INFO("UNABLE TO OPEN FILE %s", _gain_file.c_str());
+        std::vector<std::string> filenames;
     }
 
     bool StateController::checkError(){
@@ -204,18 +227,34 @@ namespace kraken_controller{
         int n_map = _controlParams_index[_gain_file];
         double *offset = _controlParams[n_map]->getOffset();
         double **gain = _controlParams[n_map]->getGain();
+        //std::cout<<"NOTcalculating error BC";
         //_controlParams[n_map]->write(std::cerr);
+<<<<<<< HEAD
         if(GoalType == 0){
             thrust->data[2] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][3]*_pose_error[3] + gain[0][6]*_pose_error[6] - gain[0][15]*_pose_error[11] - gain[0][18]*_pose_error[14] - gain[0][21]*_pose_error[17];
+=======
+            //std::cout<<"calculating error BC\n";
 
-            thrust->data[3] = offset[1] + gain[1][0]*_pose_error[0] + gain[1][3]*_pose_error[3] + gain[1][6]*_pose_error[6] + gain[1][15]*_pose_error[11] + gain[1][18]*_pose_error[14] + gain[1][21]*_pose_error[17];
+            thrust->data[2] = offset[2] + gain[2][0]*_pose_error[0] + gain[2][3]*_pose_error[3] + gain[2][6]*_pose_error[6] - gain[2][17]*_pose_error[11] - gain[2][20]*_pose_error[14] - gain[2][23]*_pose_error[17];
+>>>>>>> upstream/testing-controls
+
+            thrust->data[3] = offset[3] + gain[3][0]*_pose_error[0] + gain[3][3]*_pose_error[3] + gain[3][6]*_pose_error[6] + gain[3][17]*_pose_error[11] + gain[3][20]*_pose_error[14] + gain[3][23]*_pose_error[17];
 
             thrust->data[4] = 0;//offset[2] + gain[2][0]*_pose_error[0] + gain[2][3]*_pose_error[3] + gain[2][6]*_pose_error[6] + gain[2][15]*_pose_error[9] + gain[2][19]*_pose_error[12] + gain[2][21]*_pose_error[15];
             thrust->data[5] = 0;//offset[3] + gain[3][0]*_pose_error[0] + gain[3][3]*_pose_error[3] + gain[3][6]*_pose_error[6] + gain[3][15]*_pose_error[9] + gain[3][19]*_pose_error[12] + gain[3][21]*_pose_error[15];
+<<<<<<< HEAD
             thrust->data[0] = offset[4] + gain[4][2]*_pose_error[2] + gain[4][5]*_pose_error[5] + gain[4][8]*_pose_error[8] + gain[4][17]*_pose_error[10] + gain[4][20]*_pose_error[13] + gain[4][23]*_pose_error[16];
 
             thrust->data[1] = offset[5] + gain[5][2]*_pose_error[2] + gain[5][5]*_pose_error[5] + gain[5][8]*_pose_error[8] - gain[5][17]*_pose_error[10] - gain[5][20]*_pose_error[13] - gain[5][23]*_pose_error[16];
         }
+=======
+            thrust->data[0] = offset[0] + gain[0][2]*_pose_error[2] + gain[0][5]*_pose_error[5] + gain[0][8]*_pose_error[8] + gain[0][16]*_pose_error[10] + gain[0][19]*_pose_error[13] + gain[0][22]*_pose_error[16];
+            thrust->data[1] = offset[1] + gain[1][2]*_pose_error[2] + gain[1][5]*_pose_error[5] + gain[1][8]*_pose_error[8] - gain[1][16]*_pose_error[10] - gain[5][19]*_pose_error[13] - gain[1][22]*_pose_error[16];
+            // for(int i = 0; i<30; i++){
+            //     std::cout<<i<<"---"<<gain[1][i]<<"\n";
+            //  }
+            //std::cout<<thrust->data[0]<<"\n"<<thrust->data[1]<<"\n"<<thrust->data[2]<<"\n"<<thrust->data[3]<<"\n";
+>>>>>>> upstream/testing-controls
         /*else{
             thrust->data[0] = offset[0] + gain[0][0]*_vel_error[0] + gain[0][3]*_vel_error[3] + gain[0][6]*_vel_error[6] + gain[0][15]*_vel_error[11] + gain[0][18]*_vel_error[14] + gain[0][21]*_vel_error[17];
 
