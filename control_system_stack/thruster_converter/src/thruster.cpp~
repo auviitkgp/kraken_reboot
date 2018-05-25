@@ -137,7 +137,7 @@ int main(int argc,char** argv)
     }
     else
     {
-        temp_rate = 10;
+        temp_rate = 15;
     }
 
     /*

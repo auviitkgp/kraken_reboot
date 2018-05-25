@@ -6,6 +6,7 @@
 
 void commCB(const kraken_msgs::thrusterCmdConstPtr &msg);
 uint8_t data[18];
+serial::Serial *temp;
 
 int main(int argc, char **argv){
   ros::init(argc, argv, "serial_comm_node");
@@ -19,16 +20,10 @@ int main(int argc, char **argv){
   ros::NodeHandle n;
   ros::Subscriber CmdSub = n.subscribe<kraken_msgs::thrusterCmd>(topics::CONTROL_SEABOTIX, 1000, commCB);
   serial::Serial comm(port, baud, serial::Timeout::simpleTimeout(1000));
+  temp = &comm;
   ros::Rate loop_rate(8);
   while(ros::ok()){
-    if(comm.isOpen()) ROS_INFO("SERIAL PORT IS OPEN");
-    else{
-      comm.open();
-      ROS_INFO("SERIAL PORT IS OPENED");
-    }
-    size_t bytes_written = comm.write(data, 18);
-    std::cout << "BYTES SEND: "<<bytes_written<< "\n";
-    comm.close();
+    
     ros::spinOnce();
     loop_rate.sleep();
   }
@@ -42,4 +37,12 @@ void commCB(const kraken_msgs::thrusterCmd::ConstPtr &msg){
     data[3*i+2] = msg->data_array[i].info;
   }
   std::cout <<"SUCCESS\n";
+  if(temp->isOpen()) ROS_INFO("SERIAL PORT IS OPEN");
+    else{
+      temp->open();
+      ROS_INFO("SERIAL PORT IS OPENED");
+    }
+    size_t bytes_written = temp->write(data, 18);
+    std::cout << "BYTES SEND: "<<bytes_written<< "\n";
+    //temp->close();
 }
