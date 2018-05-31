@@ -37,9 +37,10 @@ void loop(){
         Wire.write(data[j*3] + data[j*3+1] + data[j*3+2]);
         Wire.endTransmission(false);
       }
-      //for(int k = 0; k<18; k++){
-        //Serial.println(data[k]);
-      //}
+      
+        Serial.println("IN_LOOP");
+        delay(500);
+      
     }
     data[i] = Serial.read();
     Serial.println(data[i]);
