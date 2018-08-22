@@ -27,8 +27,8 @@ namespace kraken_controller{
         void callback1(control_system::paramsConfig &msg, uint32_t level);
         void callback2(control_system::paramsConfig &msg, uint32_t level);
         void callback3(control_system::paramsConfig &msg, uint32_t level);
-        void callback4(control_system::paramsConfig &msg, uint32_t level);
-        void callback5(control_system::paramsConfig &msg, uint32_t level);
+        //void callback4(control_system::paramsConfig &msg, uint32_t level);
+        //void callback5(control_system::paramsConfig &msg, uint32_t level);
 
     private:
         ros::Publisher _pub6;

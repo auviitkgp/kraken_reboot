@@ -8,7 +8,7 @@
 namespace kraken_controller{
     class ControlParameters{
     public:
-        ControlParameters(int row = 6, int cols = 30);
+        ControlParameters(int row = 4, int cols = 3);
         ~ControlParameters();
         void load(const std::string &filename);
         void write(std::fstream *file);

@@ -8,6 +8,10 @@
 int main(int argc, char **argv){
     ros::init(argc, argv, "PIDTuning");
 
+    //argv[1] : type of goal ("roll", "pitch", ..)
+    //argv[2] : position /orientation (1) **Quaternion
+    //argv[3] : orientation(2) **Quaternion
+
     actionlib::SimpleActionClient<kraken_msgs::advancedControllerAction> _actionClient(topics::CONTROL_ADVANCEDCONTROLLER_ACTION, true);
 
     ROS_INFO("WAITING FOR CONTROL_SERVER TO START.");
@@ -31,7 +35,7 @@ int main(int argc, char **argv){
         geometry_msgs::PoseStamped pose;
         pose.header.frame_id = "/base_link";
         pose.header.stamp = ros::Time();
-        pose.pose.position.x = 2;
+        pose.pose.position.x = atof(argv[2]);
         pose.pose.position.y = 0;
         pose.pose.position.z = 0;
         pose.pose.orientation.x = 0;
@@ -57,7 +61,7 @@ int main(int argc, char **argv){
         pose.header.stamp = ros::Time();
         pose.pose.position.x = 0;
         pose.pose.position.y = 0;
-        pose.pose.position.z = 1.5;
+        pose.pose.position.z = atof(argv[2]);
         pose.pose.orientation.x = 0;
         pose.pose.orientation.y = 0;
         pose.pose.orientation.z = 0;

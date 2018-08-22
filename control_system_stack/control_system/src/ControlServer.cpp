@@ -4,7 +4,7 @@ namespace kraken_controller{
         ros::NodeHandle n;
         _time = n.createTimer(ros::Duration(1.0/freq), &ControlServer::timeCallBack, this);
         _pub6 = n.advertise<kraken_msgs::thrusterData6Thruster>(topics::CONTROL_PID_THRUSTER6, 5);
-        _state._PidErrorPub = n.advertise<kraken_msgs::PIDError>("/kraken/control/PidError", 10);
+        _state._PidErrorPub = n.advertise<geometry_msgs::Pose>("/kraken/control/PidError", 10);
         //_subState = n.subscribe<nav_msgs::Odometry>("odometry/filtered", 5, &StateController::updateState, &_state);
         start = true;
         tf::StampedTransform transform;
@@ -183,27 +183,27 @@ namespace kraken_controller{
     }
 
     void ControlServer::callback0(control_system::paramsConfig &msg, uint32_t level){
-         _state.changeParams(msg, 2);
+         _state.changeParams(msg, 0);
     }
 
     void ControlServer::callback1(control_system::paramsConfig &msg, uint32_t level){
-        _state.changeParams(msg, 0);
+        _state.changeParams(msg, 1);
     }
 
     void ControlServer::callback2(control_system::paramsConfig &msg, uint32_t level){
-        if(GoalFlag)  _state.changeParams(msg, 2);
+        _state.changeParams(msg, 2);
     }
 
     void ControlServer::callback3(control_system::paramsConfig &msg, uint32_t level){
-        if(GoalFlag)  _state.changeParams(msg, 3);
+        _state.changeParams(msg, 3);
     }
 
-    void ControlServer::callback4(control_system::paramsConfig &msg, uint32_t level){
-        if(GoalFlag)  _state.changeParams(msg, 4);
-    }
+    // void ControlServer::callback4(control_system::paramsConfig &msg, uint32_t level){
+    //     if(GoalFlag)  _state.changeParams(msg, 4);
+    // }
 
-    void ControlServer::callback5(control_system::paramsConfig &msg, uint32_t level){
-        if(GoalFlag)  _state.changeParams(msg, 5);
-        //else GoalFlag = true;
-    }
+    // void ControlServer::callback5(control_system::paramsConfig &msg, uint32_t level){
+    //     if(GoalFlag)  _state.changeParams(msg, 5);
+    //     //else GoalFlag = true;
+    // }
 }

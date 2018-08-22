@@ -12,7 +12,7 @@
 #include "geometry_msgs/Twist.h"
 #include "resources/topicHeader.h"
 #include "control_system/paramsConfig.h"
-#include "kraken_msgs/PIDError.h"
+//#include "kraken_msgs/PIDError.h"
 
 namespace kraken_controller{
     class StateController{
@@ -34,7 +34,7 @@ namespace kraken_controller{
         nav_msgs::Odometry _feedback;
         std::vector<ControlParameters*> _controlParams;
         std::map<std::string, int> _controlParams_index;
-        double _pose_error[18], _vel_error[18];
+        double _pose_error[18]; //_vel_error[18];
         int GoalType;
     };
 }

@@ -2,36 +2,9 @@
 \verbatim
 <node name="control_system" pkg="control_system" type="control_system">
   <param name="offset" type="double" value="0.0" />
-  <param name="Gain_i_px" type="double" value="0.0" />
-  <param name="Gain_i_py" type="double" value="0.0" />
-  <param name="Gain_i_pz" type="double" value="0.0" />
-  <param name="Gain_px" type="double" value="0.0" />
-  <param name="Gain_py" type="double" value="0.0" />
-  <param name="Gain_pz" type="double" value="0.0" />
-  <param name="Gain_vx" type="double" value="0.0" />
-  <param name="Gain_vy" type="double" value="0.0" />
-  <param name="Gain_vz" type="double" value="0.0" />
-  <param name="Gain_ax" type="double" value="0.0" />
-  <param name="Gain_ay" type="double" value="0.0" />
-  <param name="Gain_az" type="double" value="0.0" />
-  <param name="Gain_i_vx" type="double" value="0.0" />
-  <param name="Gain_i_vy" type="double" value="0.0" />
-  <param name="Gain_i_vz" type="double" value="0.0" />
-  <param name="Gain_i_roll" type="double" value="0.0" />
-  <param name="Gain_i_pitch" type="double" value="0.0" />
-  <param name="Gain_i_yaw" type="double" value="0.0" />
-  <param name="Gain_roll" type="double" value="0.0" />
-  <param name="Gain_pitch" type="double" value="0.0" />
-  <param name="Gain_yaw" type="double" value="0.0" />
-  <param name="Gain_vel_roll" type="double" value="0.0" />
-  <param name="Gain_vel_pitch" type="double" value="0.0" />
-  <param name="Gain_vel_yaw" type="double" value="0.0" />
-  <param name="Gain_i_vel_roll" type="double" value="0.0" />
-  <param name="Gain_i_vel_pitch" type="double" value="0.0" />
-  <param name="Gain_i_vel_yaw" type="double" value="0.0" />
-  <param name="Gain_acc_roll" type="double" value="0.0" />
-  <param name="Gain_acc_pitch" type="double" value="0.0" />
-  <param name="Gain_acc_yaw" type="double" value="0.0" />
+  <param name="Gain_Kp" type="double" value="0.0" />
+  <param name="Gain_Kd" type="double" value="0.0" />
+  <param name="Gain_Ki" type="double" value="0.0" />
 </node>
 \endverbatim
 
