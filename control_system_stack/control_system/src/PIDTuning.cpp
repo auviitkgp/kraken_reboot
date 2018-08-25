@@ -111,9 +111,9 @@ int main(int argc, char **argv){
         pose.pose.position.y = 0;
         pose.pose.position.z = 0;
         pose.pose.orientation.x = 0;
-        pose.pose.orientation.y = 0.382;
+        pose.pose.orientation.y = atof(argv[2]);
         pose.pose.orientation.z = 0;
-        pose.pose.orientation.w = 0.924;
+        pose.pose.orientation.w = 1;
         //_state.listener.waitForTransform("odom", "base_link", ros::Time(0), ros::Duration(30), ros::Duration(0.01), "FAILED");
         listener.transformPose("/odom", pose, temp);
 
