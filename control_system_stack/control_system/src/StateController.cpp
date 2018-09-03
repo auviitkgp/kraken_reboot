@@ -42,10 +42,10 @@ namespace kraken_controller{
         // _feedback.twist.angular.z = msg->twist.angular.z;
     }
 
-    void StateController::updatePID(geometry_msgs::Pose transPose, geometry_msgs::Twist transTwist){
-        _pose_error[3] = _pose_error[0] - transPose.position.x;
-        _pose_error[4] = _pose_error[1] - transPose.position.y;
-        _pose_error[5] = _pose_error[2] - transPose.position.z;
+    void StateController::updatePID(geometry_msgs::Pose transPose, geometry_msgs::Pose goalPose){
+        _pose_error[3] = transPose.position.x - _pose_error[0];
+        _pose_error[4] = transPose.position.y - _pose_error[1];
+        _pose_error[5] = transPose.position.z - _pose_error[2];
         _pose_error[6] = _pose_error[6] + transPose.position.x;
         _pose_error[7] = _pose_error[7] + transPose.position.y;
         _pose_error[8] = _pose_error[8] + transPose.position.z;
@@ -53,22 +53,27 @@ namespace kraken_controller{
         _pose_error[1] = transPose.position.y;
         _pose_error[2] = transPose.position.z;
 
-        double roll, pitch, yaw;
-        tf::Quaternion q(transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
+        double roll_g, pitch_g, yaw_g, roll_c, pitch_c, yaw_c;
+        tf::Quaternion q_g(goalPose.orientation.x, goalPose.orientation.y, goalPose.orientation.z, goalPose.orientation.w);
+        tf::Quaternion q_c(transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
         //std::cout<<transPose.position.x<<"x\n"<<transPose.position.y<<"y\n"<<transPose.position.z<<"z\n";
         //printf("X%f Y%f Z%f W%f \n", transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
-        tf::Matrix3x3 temp(q);
-        temp.getRPY(roll, pitch, yaw);
+        //printf("X%f Y%f Z%f W%f \n", goalPose.orientation.x, goalPose.orientation.y, goalPose.orientation.z, goalPose.orientation.w);
+        tf::Matrix3x3 t_g(q_g);
+        t_g.getRPY(roll_g, pitch_g, yaw_g);
 
-        _pose_error[12] = _pose_error[9] - roll;
-        _pose_error[13] = _pose_error[10] - pitch;
-        _pose_error[14] = _pose_error[11] - yaw;
-        _pose_error[15] = _pose_error[15] + roll;
-        _pose_error[16] = _pose_error[16] + pitch;
-        _pose_error[17] = _pose_error[17] + yaw;
-        _pose_error[9] = roll;
-        _pose_error[10] = pitch;
-        _pose_error[11] = yaw;
+        tf::Matrix3x3 t_c(q_c);
+        t_c.getRPY(roll_c, pitch_c, yaw_c);
+
+        _pose_error[12] = (roll_g - roll_c) -  _pose_error[9];
+        _pose_error[13] = (pitch_g - pitch_c) - _pose_error[10];
+        _pose_error[14] = (yaw_g - yaw_c) - _pose_error[11];
+        _pose_error[15] = _pose_error[15] + (roll_g - roll_c);
+        _pose_error[16] = _pose_error[16] + (pitch_g - pitch_c);
+        _pose_error[17] = _pose_error[17] + (yaw_g - yaw_c);
+        _pose_error[9] = roll_g - roll_c;
+        _pose_error[10] = pitch_g - pitch_c;
+        _pose_error[11] = yaw_g - yaw_c;
 
         // for(int i = 0; i<3; i++){
         //     std::cout<<i<<"---"<<_pose_error[i]<<"\n";
@@ -137,8 +142,7 @@ namespace kraken_controller{
     }
 
     bool StateController::checkError(){
-        for(int i = 0; i<3; i++){//check goaltype
-            //std::cout<<"GoalType"<<GoalType;
+        for(int i = 0; i<3; i++){
             if(GoalType == 0){
                 if(fabs(_pose_error[i]) >= 0.05)
                     return false;
@@ -155,9 +159,6 @@ namespace kraken_controller{
         int n_map = _controlParams_index[_gain_file];
         double *offset = _controlParams[n_map]->getOffset();
         double **gain = _controlParams[n_map]->getGain();
-        //std::cout<<"NOTcalculating error BC";
-        //_controlParams[n_map]->write(std::cerr);
-        //std::cout<<"calculating error BC\n";
 
         thrust->data[0] = -(offset[1] + gain[1][0]*_pose_error[2] + gain[1][1]*_pose_error[5] + gain[1][2]*_pose_error[8]) - (offset[3] + gain[3][0]*_pose_error[10] + gain[3][1]*_pose_error[13] + gain[3][2]*_pose_error[16]);
         thrust->data[1] = -(offset[1] + gain[1][0]*_pose_error[2] + gain[1][1]*_pose_error[5] + gain[1][2]*_pose_error[8]) + (offset[3] + gain[3][0]*_pose_error[10] + gain[3][1]*_pose_error[13] + gain[3][2]*_pose_error[16]);
@@ -165,18 +166,6 @@ namespace kraken_controller{
         thrust->data[3] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][1]*_pose_error[3] + gain[0][2]*_pose_error[6] + (offset[2] + gain[2][0]*_pose_error[11] + gain[2][1]*_pose_error[14] + gain[2][2]*_pose_error[17]);
         thrust->data[4] = 0;
         thrust->data[5] = 0;
-        // for(int i = 0; i<30; i++){
-        //     std::cout<<i<<"---"<<gain[1][i]<<"\n";
-        //  }
-        //std::cout<<thrust->data[0]<<"\n"<<thrust->data[1]<<"\n"<<thrust->data[2]<<"\n"<<thrust->data[3]<<"\n";
-        /*else{
-        thrust->data[0] = offset[0] + gain[0][0]*_vel_error[0] + gain[0][3]*_vel_error[3] + gain[0][6]*_vel_error[6] + gain[0][15]*_vel_error[11] + gain[0][18]*_vel_error[14] + gain[0][21]*_vel_error[17];
-        thrust->data[1] = offset[1] + gain[1][0]*_vel_error[0] + gain[1][3]*_vel_error[3] + gain[1][6]*_vel_error[6] + gain[1][15]*_vel_error[11] + gain[1][18]*_vel_error[14] + gain[1][21]*_vel_error[17];
-        thrust->data[2] = 0;//offset[2] + gain[2][0]*_vel_error[0] + gain[2][3]*_vel_error[3] + gain[2][6]*_vel_error[6] + gain[2][15]*_vel_error[9] + gain[2][19]*_vel_error[12] + gain[2][21]*_vel_error[15];
-        thrust->data[3] = 0;//offset[3] + gain[3][0]*_vel_error[0] + gain[3][3]*_vel_error[3] + gain[3][6]*_vel_error[6] + gain[3][15]*_vel_error[9] + gain[3][19]*_vel_error[12] + gain[3][21]*_vel_error[15];
-        thrust->data[4] = offset[4] + gain[4][2]*_vel_error[2] + gain[4][5]*_vel_error[5] + gain[4][8]*_vel_error[8] + gain[4][17]*_vel_error[10] + gain[4][20]*_vel_error[13] + gain[4][23]*_vel_error[16];
-        thrust->data[5] = offset[5] + gain[5][2]*_vel_error[2] + gain[5][5]*_vel_error[5] + gain[5][8]*_vel_error[8] + gain[5][17]*_vel_error[10] + gain[5][20]*_vel_error[13] + gain[5][23]*_vel_error[16];
-        }*/
         for(int i=0; i<4; i++) {
             if(thrust->data[i] < -100)
                 thrust->data[i] = -100;

@@ -23,7 +23,7 @@ namespace kraken_controller{
         void twistParam();
         void stop();
         void updateState(const nav_msgs::Odometry &);
-        void updatePID(geometry_msgs::Pose, geometry_msgs::Twist);
+        void updatePID(geometry_msgs::Pose, geometry_msgs::Pose);
         void loadParams(const std::vector<std::string> &);
         void changeParams(control_system::paramsConfig &, int);
         bool checkError();

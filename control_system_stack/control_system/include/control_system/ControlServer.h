@@ -21,7 +21,7 @@ namespace kraken_controller{
         void timeCallBack(const ros::TimerEvent&);
         void setServer(actionlib::SimpleActionServer<kraken_msgs::advancedControllerAction> *);
         void executeGoalCB(const kraken_msgs::advancedControllerGoalConstPtr &);
-        void transformGoal(geometry_msgs::Pose *, geometry_msgs::Twist *);
+        void transformGoal();
         void loadParams(const std::vector<std::string> &filenames);
         void callback0(control_system::paramsConfig &msg, uint32_t level);
         void callback1(control_system::paramsConfig &msg, uint32_t level);
