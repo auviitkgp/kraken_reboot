@@ -166,11 +166,11 @@ namespace kraken_controller{
         thrust->data[3] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][1]*_pose_error[3] + gain[0][2]*_pose_error[6] + (offset[2] + gain[2][0]*_pose_error[11] + gain[2][1]*_pose_error[14] + gain[2][2]*_pose_error[17]);
         thrust->data[4] = 0;
         thrust->data[5] = 0;
-        for(int i=0; i<4; i++) {
-            if(thrust->data[i] < -100)
-                thrust->data[i] = -100;
-            else if(thrust->data[i] > 100)
-                thrust->data[i] = 100;
-        }
+        // for(int i=0; i<4; i++) {
+        //     if(thrust->data[i] < -100)
+        //         thrust->data[i] = -100;
+        //     else if(thrust->data[i] > 100)
+        //         thrust->data[i] = 100;
+        //}
     }
 }
