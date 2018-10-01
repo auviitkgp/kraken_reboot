@@ -144,11 +144,11 @@ namespace kraken_controller{
     bool StateController::checkError(){
         for(int i = 0; i<3; i++){
             if(GoalType == 0){
-                if(fabs(_pose_error[i]) >= 0.05)
+                if(fabs(_pose_error[i]) >= 0.01)
                     return false;
             }
             else if(GoalType == 1){
-                if(fabs(_pose_error[i+9]) >= 0.5)
+                if(fabs(_pose_error[i+9]) >= 0.01)
                     return false;
             }
         }
