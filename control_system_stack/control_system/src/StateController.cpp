@@ -54,26 +54,27 @@ namespace kraken_controller{
         _pose_error[2] = transPose.position.z;
 
         double roll_g, pitch_g, yaw_g, roll_c, pitch_c, yaw_c;
-        tf::Quaternion q_g(goalPose.orientation.x, goalPose.orientation.y, goalPose.orientation.z, goalPose.orientation.w);
+        //tf::Quaternion q_g(goalPose.orientation.x, goalPose.orientation.y, goalPose.orientation.z, goalPose.orientation.w);
         tf::Quaternion q_c(transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
         //std::cout<<transPose.position.x<<"x\n"<<transPose.position.y<<"y\n"<<transPose.position.z<<"z\n";
         //printf("X%f Y%f Z%f W%f \n", transPose.orientation.x, transPose.orientation.y, transPose.orientation.z, transPose.orientation.w);
         //printf("X%f Y%f Z%f W%f \n", goalPose.orientation.x, goalPose.orientation.y, goalPose.orientation.z, goalPose.orientation.w);
-        tf::Matrix3x3 t_g(q_g);
-        t_g.getRPY(roll_g, pitch_g, yaw_g);
+        //tf::Matrix3x3 t_g(q_g);
+        //t_g.getRPY(roll_g, pitch_g, yaw_g);
 
         tf::Matrix3x3 t_c(q_c);
         t_c.getRPY(roll_c, pitch_c, yaw_c);
-
-        _pose_error[12] = (roll_g - roll_c) -  _pose_error[9];
-        _pose_error[13] = (pitch_g - pitch_c) - _pose_error[10];
-        _pose_error[14] = (yaw_g - yaw_c) - _pose_error[11];
-        _pose_error[15] = _pose_error[15] + (roll_g - roll_c);
-        _pose_error[16] = _pose_error[16] + (pitch_g - pitch_c);
-        _pose_error[17] = _pose_error[17] + (yaw_g - yaw_c);
-        _pose_error[9] = roll_g - roll_c;
-        _pose_error[10] = pitch_g - pitch_c;
-        _pose_error[11] = yaw_g - yaw_c;
+        //ROS_INFO("%f\n",yaw_c);
+        
+        _pose_error[12] = roll_c -  _pose_error[9];//_pose_error[12] = (roll_g - roll_c) -  _pose_error[9];
+        _pose_error[13] = pitch_c - _pose_error[10];//_pose_error[13] = (pitch_g - pitch_c) - _pose_error[10];
+        _pose_error[14] = yaw_c - _pose_error[11];//_pose_error[14] = (yaw_g - yaw_c) - _pose_error[11];
+        _pose_error[15] = _pose_error[15] + roll_c;//_pose_error[15] = _pose_error[15] + (roll_g - roll_c);
+        _pose_error[16] = _pose_error[16] + pitch_c;//_pose_error[16] = _pose_error[16] + (pitch_g - pitch_c);
+        _pose_error[17] = _pose_error[17] + yaw_c;//_pose_error[17] = _pose_error[17] + (yaw_g - yaw_c);
+        _pose_error[9] = roll_c;//_pose_error[9] = roll_g - roll_c;
+        _pose_error[10] = pitch_c;//_pose_error[10] = pitch_g - pitch_c;
+        _pose_error[11] = yaw_c;//_pose_error[11] = yaw_g - yaw_c;
 
         // for(int i = 0; i<3; i++){
         //     std::cout<<i<<"---"<<_pose_error[i]<<"\n";
@@ -143,14 +144,14 @@ namespace kraken_controller{
 
     bool StateController::checkError(){
         for(int i = 0; i<3; i++){
-            if(GoalType == 0){
+            //if(GoalType == 0){
                 if(fabs(_pose_error[i]) >= 0.01)
                     return false;
-            }
-            else if(GoalType == 1){
+            //}
+            //else if(GoalType == 1){
                 if(fabs(_pose_error[i+9]) >= 0.01)
                     return false;
-            }
+            //}
         }
         return true;
     }

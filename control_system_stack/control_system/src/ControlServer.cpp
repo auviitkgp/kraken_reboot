@@ -136,16 +136,16 @@ namespace kraken_controller{
 
 //////////
 
-        temp.header.frame_id = "/base_link";
+        temp.header.frame_id = "/odom";//temp.header.frame_id = "/base_link";
         temp.header.stamp = ros::Time();
         temp.pose.position.x = 0;
         temp.pose.position.y = 0;
         temp.pose.position.z = 0;
-        temp.pose.orientation.x = 0;            
-        temp.pose.orientation.y = 0;            
-        temp.pose.orientation.z = 0;            
-        temp.pose.orientation.w = 1;            
-        _state.listener.transformPose("/odom", temp, transtemp);
+        temp.pose.orientation.x = _pose_Goal.orientation.x;//temp.pose.orientation.x = 0;            
+        temp.pose.orientation.y = _pose_Goal.orientation.y;//temp.pose.orientation.y = 0;            
+        temp.pose.orientation.z = _pose_Goal.orientation.z;//temp.pose.orientation.z = 0;            
+        temp.pose.orientation.w = _pose_Goal.orientation.w;//temp.pose.orientation.w = 1;            
+        _state.listener.transformPose("/base_link", temp, transtemp);
         transPose.orientation.x = transtemp.pose.orientation.x;      //Current orientation of base_link w.r.t to odom
         transPose.orientation.y = transtemp.pose.orientation.y;      //Current orientation of base_link w.r.t to odom
         transPose.orientation.z = transtemp.pose.orientation.z;      //Current orientation of base_link w.r.t to odom
