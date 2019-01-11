@@ -20,8 +20,8 @@ namespace kraken_controller{
 
     void ControlParameters::load(const std::string &filename){
         std::ifstream file;
-        //std::string str = "/home/yash/auv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
-        std::string str = "/home/teamauv/teamauv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
+        std::string str = "/home/yash/teamauv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
+        //std::string str = "/home/teamauv/teamauv_ws/src/kraken_reboot/control_system_stack/control_system/parameters/";
         str.append(filename).c_str();
         file.open((str.append(".cp")).c_str());
         //file.open((str.append(filename)).c_str());
@@ -51,8 +51,8 @@ namespace kraken_controller{
             }
             (*file) << "\n";
         }
-        ROS_INFO("FILE UPDATED SUCCESSFULLY\n");
         file -> close();
+        ROS_INFO("FILE UPDATED SUCCESSFULLY\n");
     }
 
     void ControlParameters::write(std::ostream &out){
