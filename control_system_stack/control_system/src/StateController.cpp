@@ -161,10 +161,10 @@ namespace kraken_controller{
         double *offset = _controlParams[n_map]->getOffset();
         double **gain = _controlParams[n_map]->getGain();
 
-        thrust->data[0] = -(offset[1] + gain[1][0]*_pose_error[2] + gain[1][1]*_pose_error[5] + gain[1][2]*_pose_error[8]) - (offset[3] + gain[3][0]*_pose_error[10] + gain[3][1]*_pose_error[13] + gain[3][2]*_pose_error[16]);
-        thrust->data[1] = -(offset[1] + gain[1][0]*_pose_error[2] + gain[1][1]*_pose_error[5] + gain[1][2]*_pose_error[8]) + (offset[3] + gain[3][0]*_pose_error[10] + gain[3][1]*_pose_error[13] + gain[3][2]*_pose_error[16]);
-        thrust->data[2] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][1]*_pose_error[3] + gain[0][2]*_pose_error[6] - (offset[2] + gain[2][0]*_pose_error[11] + gain[2][1]*_pose_error[14] + gain[2][2]*_pose_error[17]);
-        thrust->data[3] = offset[0] + gain[0][0]*_pose_error[0] + gain[0][1]*_pose_error[3] + gain[0][2]*_pose_error[6] + (offset[2] + gain[2][0]*_pose_error[11] + gain[2][1]*_pose_error[14] + gain[2][2]*_pose_error[17]);
+        thrust->data[0] = -(offset[1] + gain[1][0]*_pose_error[2] + gain[1][1]*_pose_error[5] + gain[1][2]*_pose_error[8]) + (offset[3] + gain[3][0]*_pose_error[10] + gain[3][1]*_pose_error[13] + gain[3][2]*_pose_error[16]);
+        thrust->data[1] = -(offset[1] + gain[1][0]*_pose_error[2] + gain[1][1]*_pose_error[5] + gain[1][2]*_pose_error[8]) - (offset[3] + gain[3][0]*_pose_error[10] + gain[3][1]*_pose_error[13] + gain[3][2]*_pose_error[16]);
+        thrust->data[2] =   offset[0] + gain[0][0]*_pose_error[0] + gain[0][1]*_pose_error[3] + gain[0][2]*_pose_error[6] -  (offset[2] + gain[2][0]*_pose_error[11] + gain[2][1]*_pose_error[14] + gain[2][2]*_pose_error[17]);
+        thrust->data[3] =   offset[0] + gain[0][0]*_pose_error[0] + gain[0][1]*_pose_error[3] + gain[0][2]*_pose_error[6] +  (offset[2] + gain[2][0]*_pose_error[11] + gain[2][1]*_pose_error[14] + gain[2][2]*_pose_error[17]);
         thrust->data[4] = 0;
         thrust->data[5] = 0;
         // for(int i=0; i<4; i++) {
